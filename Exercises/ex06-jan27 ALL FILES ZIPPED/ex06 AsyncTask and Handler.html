@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}.red {
+	color: #F00;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 06 AsyncTask and Handlers: Threading in Android</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p>The purpose of this exercise is to familiarize you with the AsyncTask and Handler classes that android provides to help with threading. In particular they allow other threads to handle slow operations or to report back results to the main activity thread.</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Background:</span></p>
+<p>In android the main activity thread is not allowed to do network access and conversely other threads are not allowed to update the main activity's view components. This creates a programming dilemma: long operations must be offloaded to other threads but those threads cannot update the user interface. Some helper classes are supplied by android to help with this: <span class="code">AsyncTask</span> and <span class="code">Handler</span>. For tasks that want to report progress to the main UI thread a <span class="code">ProgressBar</span> helper class is also provided. (See the demo code posted in notes 04 for an example of using the progress indicators.)</p>
+<p>For this class exercise we have two distinct projects: one using <span class="code">AsyncTask</span> to read a datafile from the network. The other is a project to which you need to add a <span class="code">Handler</span> to report information back to the UI thread.</p>
+<p class="code">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Part I: AsyncTask</span></p>
+<p class="segment-header"><span class="black-bold">Demo Code</span></p>
+<p>Open and run the <span class="code">demo part1</span> project in the <span class="code">demo_code</span> folder. Study the code. It opens a raw file resource which is an XML data file of true-false test questions. The questions are presented on the UI where the user can move between previous and next questions and answer them. This is similar to code you created for the XmlPullParser exercise. (Notice by the way that the layout changes for landscape mode. Can you see how that is being done in the code?)</p>
+<p>&nbsp;</p>
+<p><img src="images/demo1.png"  alt=""/></p>
+<p>&nbsp;</p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1 Asynchronous File Parsing)</span></p>
+<p>Notice in the demo code the resource file is being opened and parsed in the QuizActivity's <span class="code">onCreate()</span> method (i.e on the main thread of computation). File reading is a slow operation an we want to do it on a separate thread using an <span class="code">AsyncTask</span>.</p>
+<p>Create an private inner class called <span class="code">FileDownloadTask</span> within the <span class="code">QuizActivity</span> class with the following structure:</p>
+<pre>
+ private class FileDownloadTask extends AsyncTask &lt;Void, Void, Void&gt; {
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            //excuted on background thread
+            //open and parse data file
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            //executed on main UI thread
+
+        }
+    }
+</pre>
+<p>Recall that inner classes in java have access to the instance variables of their enclosing class - a kind of &quot;poor man's&quot; closures. Now relocate the code that opens and parses the datafile to within your async. task class.</p>
+<p>Launch the task as follows: </p>
+<pre>
+        Log.i(TAG, "starting file download Task");
+        FileDownloadTask download = new FileDownloadTask();
+        download.execute();
+
+</pre>
+<p>You should now be able to run the app and have the file opened and parsed on the background thread associated with the AsyncTask. Verify that this works (the code should behave as before).</p>
+<p class="segment-header"><span class="black-bold">Problem 2 Download Data File from Dropbox)</span></p>
+<p>Now what we really want to do is download the exam data file from a dropbox location stored on the internet.</p>
+<p>For this make the following modifications:</p>
+<p>1) Assign permissions in the manifest. Android requires that applications ask permission to use the internet or check network status. Add the following two lines to the <span class="code">AndroidManifest.xml</span> file.</p>
+<pre>    &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;<br>    &lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
+</pre>
+<p>2) Write the following private helper method that will allow the app to check whether it is connected to the network:</p>
+<pre>//Helper&#32;method&#32;to&#32;determine&#32;if&#32;Internet&#32;connection&#32;is&#32;available.<br>private&#32;boolean&#32;isNetworkAvailable()&#32;{<br>&#32;&#32;&#32;&#32;ConnectivityManager&#32;connectivityManager<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;=&#32;(ConnectivityManager)&#32;getSystemService(Context.CONNECTIVITY_SERVICE);<br>&#32;&#32;&#32;&#32;NetworkInfo&#32;activeNetworkInfo&#32;=&#32;connectivityManager.getActiveNetworkInfo();<br>&#32;&#32;&#32;&#32;return&#32;activeNetworkInfo&#32;!=&#32;null&#32;&amp;&amp;&#32;activeNetworkInfo.isConnected();<br>}</pre>
+<p>3) Observe that the following variables have already been defined to represent the network URL from which to download the file and the name of the local file we will store it to :</p>
+<pre>private&#32;static&#32;final&#32;String&#32;fileURLString&#32;=&#32;"https://www.dropbox.com/s/bf0grfz7kr801pj/comp2601exam.xml?dl=1";
+private&#32;static&#32;final&#32;String&#32;downloadedQuestionFileName&#32;=&#32;null;</pre>
+<p>Also observe that a .java class <span class="code">FileDownloader</span> has already been written that will allow you to download a file from a network location and store it in a local resource file. You should not have to modify this <span class="code">FileDownloader</span> class for the exercise.</p>
+<p>When launching the <span class="code">AsyncTask</span> check first whether the network is connected:</p>
+<pre>if(isNetworkAvailable()){<br>&#32;&#32;&#32;&#32;Log.i(TAG,&#32;"starting&#32;file&#32;download&#32;Task");<br>&#32;&#32;&#32;&#32;FileDownloadTask&#32;download&#32;=&#32;new&#32;FileDownloadTask();<br>&#32;&#32;&#32;&#32;download.execute();<br><br>}
+</pre>
+<p>From within your <span class="code">AsyncTask</span> you should now be able to download the network file and write it to a local file as follows: </p>
+<pre>try&#32;{<br>&#32;&#32;&#32;&#32;FileOutputStream&#32;fileOutputStream&#32;=&#32;openFileOutput(downloadedQuestionFileName,&#32;Context.MODE_PRIVATE);<br>&#32;&#32;&#32;&#32;FileDownloader.DownloadFromUrl(fileURLString,&#32;fileOutputStream);<br>}&#32;catch&#32;(FileNotFoundException&#32;e)&#32;{<br>&#32;&#32;&#32;&#32;Log.i(TAG,&#32;"ERROR:&#32;file&#32;to&#32;download&#32;not&#32;found");<br>&#32;&#32;&#32;&#32;e.printStackTrace();<br>}<br>
+</pre>
+<p>4) Before you try to parse the downloaded file you should probably read through it a line at a time and write those lines to the logcat terminal.</p>
+<p>A word of caution about the dropbox file location we have provided. The link provided is:</p>
+<pre>https://www.dropbox.com/s/bf0grfz7kr801pj/comp2601exam.xml?dl=1</pre>
+<p>If you visit that link with a browser you probably will not see the file, but if you visit the link with the last part set to <span class="code">?dl=0</span> instead of <span class="code">?dl=1</span> you should see the webpage that dropbox provides in your browser. What is happening is that dropbox is trying to render a webpage for you but that is not what you want to download. Setting <span class="code">?dl=1</span> will allow you to download just the data file, not a webpage showing the file. That is why we suggest you print out the lines of the file as a debug step before you proceed to trying to parse it. You want to make sure you are dealing with the actual XML and not a web page rendering of it.</p>
+<p>When you are convinced you are opening an XML file, go ahead and invoke the parsing code. You should now have the app showing you an exam downloaded from the dropbox location.</p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Part II: Handlers</span></p>
+<p class="segment-header"><span class="black-bold">Demo Code</span></p>
+<p>Open and run the <span class="code">demo part2 Dr Beat</span> project in the <span class="code">demo_code</span> folder. Study the code. It implements a simple musician's metronome that allows you to set a tempo and the start and stop it. When it is running it will play sound files for the metronome clicks -more cowbell! Notice the downbeat click (on beat one) is a different, accent, sound. </p>
+<p><img src="images/demo2.png" width="248" height="243" alt=""/></p>
+<p>This demo code illustrates a couple of intesting things. First the main activity object and the SoundManager object are accessible via <span class="code">static</span> instance variables. That is, any code on any thread can get access to the main activity instance by calling <span class="code">MainActivity.getInstance()</span>. Similarly for the <span class="code">SoundManager</span> instance. This works in this code because there is only supposed to be one instance of the <span class="code">SoundManager</span> and the <span class="code">MainActivity</span>. </p>
+<p>Second notice that the <span class="code">Ticker</span> thread runs a &quot;game style&quot; while-loop. That is, a while-loop running continously doing as many computations as it can. It uses time samples to determine when it is time to play a sound. Game loops typically try go get in lots of computations and once in a while render a frame or play a sound. By using time stamps the timing of the sound, or animation, is not affected by the speed, or number of repetitions, of the while-loop.</p>
+<p><span class="segment-header"><span class="black-bold">Problem3</span></span></p>
+<p>The intention of the app, however, is that a beat count of 1...2....3....4...1... is shown on the UI. That is, each time a sound plays the count on the UI advances: 1,2,3,4,1,2,3,4,1,... etc. So we want the Ticker thread to cause the main tread to display the beat count in its </p>
+<pre>mBeatCountView</pre>
+<p>TextView. To accomplish this we will use a <span class="code">Handler</span>.</p>
+<p>A <span class="code">Handler</span> is an android helper class that allows a thread to run code on another thread. Here we want the Ticker thread to be able to run code on the Main thread to update the UI. </p>
+<p>1) In the <span class="code">MainActivity</span> class declare a <span class="code">private Handler hander;</span> instance variable and in its <span class="code">onCreate()</span> method intialize it as follows:</p>
+<pre>handler&#32;=&#32;new&#32;Handler();</pre>
+<p>The handler is declared, and created, in the thread where you want the code to run -in this case the MainActivity UI thread. </p>
+<p>2) In the <span class="code">Ticker.Beat</span> class's <span class="code">run</span> method (which runs on Ticker's thread) where the sound gets played you use the main activity's handler to <span class="code">post</span> the code you want run on the main thread. The code would look something like: </p>
+<pre>mainActivityInstance.getHandler().post(new&#32;Runnable()&#32;{<br>&#32;&#32;public&#32;void&#32;run()&#32;{<br>&#32;&#32;&#32;&#32;&#32;mainActivityInstance.setBeatCount(beatCount);<br>&#32;&#32;}<br>});<br>
+</pre>
+<p>Notice this code fragment is written as though you have access to the main activity object via <span class="code">mainActivityInstance.</span> A reference to this object could be passed in during construction of the Ticker object, but you could also get access to the <span class="code">MainActivity</span> instance via the <span class="code">MainActivity.getInstance()</span> static method that has been defined  and then also provide <span class="code">getHandler()</span> and <span class="code">setBeatCount()</span> methods.</p>
+<p>Once you have wired in the <span class="code">Handler</span> you should be able to display the beats 1,2,3,4,1,... when the metronome is playing.</p>
+<p><img src="images/demo3.png" width="308" height="365" alt=""/></p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p></p>
+<p><span class="segment-header"><span class="black-bold">Optional:</span></span></p>
+<p>Modify the code so you can stop and restart the metronome after a device rotate. Currently the metronome keeps playing but one you rotate you cannot stop it.</p>
+<p>Modify the file download example so the file does not get downloaded and parsed each time the device is rotated.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+</html>

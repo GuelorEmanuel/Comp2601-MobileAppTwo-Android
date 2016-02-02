@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<exam>
+    <question contributor="Guelor Emanuel">
+        <question_text>
+            How many countries are in the continent Africa?
+        </question_text>
+        <choices>
+            <o>a)</o>
+            <o>b)</o>
+            <o>c)</o>
+            <o>d)</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text>
+            How many countries are in the continent of Europe?
+        </question_text>
+        <choices>
+            <o>a)</o>
+            <o>b)</o>
+            <o>c)</o>
+            <o>d)</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text>
+            How many countries are in the continent of Asia?
+        </question_text>
+        <choices>
+            <o>a)</o>
+            <o>b)</o>
+            <o>c)</o>
+            <o>d)</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text>
+            How many countries are in the continent of North America?
+        </question_text>
+        <choices>
+            <o>a)</o>
+            <o>b)</o>
+            <o>c)</o>
+            <o>d)</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text>
+            How many countries are in the continent of South America
+        </question_text>
+        <choices>
+            <o>a)</o>
+            <o>b)</o>
+            <o>c)</o>
+            <o>d)</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text>
+            How many countries are in the Middle East?
+        </question_text>
+        <choices>
+            <o>a)</o>
+            <o>b)</o>
+            <o>c)</o>
+            <o>d)</o>
+        </choices>
+    </question>
+</exam>

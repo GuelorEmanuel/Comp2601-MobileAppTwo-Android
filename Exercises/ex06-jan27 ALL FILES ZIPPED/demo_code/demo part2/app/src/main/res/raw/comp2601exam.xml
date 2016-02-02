@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<exam>
+    <question contributor="LD Nel">
+        <question_text>
+            In Java the == operation performs the same function as .equals() method in java
+        </question_text>
+        <answer>false</answer>
+    </question>
+    <question contributor="LD Nel">
+        <question_text>
+            Given java expression z = x.foo(y), in method foo() the variable 'this' refers to y
+        </question_text>
+        <answer>false</answer>
+    </question>
+    <question contributor="LD Nel">
+        <question_text>
+            Subclasses in java can access the
+            private variables of their superclass
+        </question_text>
+        <answer>false</answer>
+    </question>
+    <question contributor="LD Nel">
+        <question_text>
+            An abstract class in java is a class
+            with no method implementations
+        </question_text>
+        <answer>false</answer>
+    </question>
+    <question contributor="LD Nel">
+        <question_text>
+            Constructors in java should be public
+            and have no return type, not even void
+        </question_text>
+        <answer>true</answer>
+    </question>
+    <question contributor="LD Nel">
+        <question_text>
+            Can an African swallow fly faster than an European swallow
+        </question_text>
+        <answer>true</answer>
+    </question>
+</exam>

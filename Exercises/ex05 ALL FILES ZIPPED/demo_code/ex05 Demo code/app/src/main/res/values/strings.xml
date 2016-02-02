@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Threads</string>
+    <string name="button_start">START</string>
+    <string name="button_stop">STOP</string>
+
+    <string name="acount1">Acount 1</string>
+    <string name="acount2">Acount 2</string>
+
+    <string name="total">Total</string>
+
+</resources>

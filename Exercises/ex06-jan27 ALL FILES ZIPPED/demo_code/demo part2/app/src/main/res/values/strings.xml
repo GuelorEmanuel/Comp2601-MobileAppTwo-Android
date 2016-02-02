@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Dr Beat</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="question_text">Can a swallow fly?</string>
+    <string name="play_button_label">PLAY</string>
+    <string name="stop_button_label">STOP</string>
+
+</resources>

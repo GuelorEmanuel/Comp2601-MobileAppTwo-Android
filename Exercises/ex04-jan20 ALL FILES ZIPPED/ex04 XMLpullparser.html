@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}.red {
+	color: #F00;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 04 Android Pull Parser</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p>The purpose of this exercise is to have you familiarize yourself with the android XML pull parser. This is an XML parser not found in non-android java. It is easy to use and will allow you to parse XML datafiles whenever an application needs to.</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Background:</span></p>
+<p>In the previous exercise we manually parsed very &quot;friendly&quot; XML. Here we would like to parse XML that contains the full features of the XML specification, mostly allowing attributes in the tags and not requiring the tags to be nicely formatted, just valid. Again, if necessary review the basics of XML at this <a href="http://www.w3schools.com/xml/default.asp">W3 schools link</a> before coming to the exercise. Android provides a class <a href="http://developer.android.com/reference/org/xmlpull/v1/XmlPullParser.html">XmlPullParser</a> intended to make XML parsing straight-forward. Vogella provides a short tutorial introduction to the XmlPullParser <a href="http://www.vogella.com/tutorials/AndroidXML/article.html">here</a>.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Demo Code</span></p>
+<p>Open and run the project in the <span class="code">demo_code</span> folder. Like the previous exercise, it creates an app that lets you answer true-false exam questions by pressing the &quot;True&quot; or &quot;False&quot; buttons. You can move from question to question by pressing the &quot;Next&quot; and &quot;Previous&quot; buttons. Each time you answer a question a <span class="black-bold">toast</span> pops up to tell you if you answered correctly or not.  The application screen should look something like this:</p>
+<p><img src="images/demo1.png"  alt=""/></p>
+<p>&nbsp;</p>
+<p>Observe that the demo code currently opens a <span class="code">bufferedReader</span> on the datafile <span class="code">res/raw/comp2601exam.xml</span> and then calls the <span class="code">static</span> method <span class="code">Exam.pullParseFrom(BufferedReader)</span>to parse the data and create the exam questions. However all the <span class="code">pullParseFrom</span> method currently does is return the <span class="code">Question</span> class's example set. For this exercise we are going to replace the code in the <span class="code">pullParseFrom(BufferedReader)</span> method to actually parse the datafile using the <span class="code">XmlPullParser</span> class. </p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1)</span></p>
+<p>&nbsp;</p>
+<p>For this problem set up an instance of the <span class="code">XmlPullParser</span> within the Exam class's <span class="code">pullParseFrom()</span> static method.</p>
+<p>The code structure  could be as follows. Notice it still just returns the example set of questions.</p>
+<pre>
+    public static ArrayList<Question> pullParseFrom(BufferedReader reader){
+
+        ArrayList<Question> questions = Question.exampleSet1(); //for now
+
+        // Get our factory and create a PullParser
+        XmlPullParserFactory factory = null;
+        try {
+            factory = XmlPullParserFactory.newInstance();
+            XmlPullParser xpp = factory.newPullParser();
+
+            xpp.setInput(reader); // set input file for parser
+            int eventType = xpp.getEventType(); // get initial eventType
+
+            // Loop through pull events until we reach END_DOCUMENT
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+
+                // handle the xml tags encountered
+                switch (eventType) {
+                    case XmlPullParser.START_TAG: //XML opening tags
+                        //to do
+
+                         break;
+
+                    case XmlPullParser.TEXT:
+                        //to do
+
+                        break;
+
+                    case XmlPullParser.END_TAG: //XML closing tags
+                        //to do
+
+                        break;
+
+                    default:
+                        break;
+                }
+                //iterate
+                eventType = xpp.next();
+            }
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+
+    }
+</pre>
+<p>Now investigate the kind of <span class="black-bold">get</span> methods available for the <span class="code">xpp</span> object. For example <span class="code">xpp.getName()</span> should return the name of the tag. <span class="code">xpp.getText()</span> should return any text (between XML tags) collected. Add what code is necessary in the <span class="code">switch</span> statement so that you can print the names of tags and text collected to the logcat terminal. Your output might look as follows:</p>
+<pre>
+I/Exam: START_TAG: exam
+I/Exam: TEXT: 
+            
+I/Exam: START_TAG: question
+I/Exam: TEXT: 
+                
+I/Exam: START_TAG: question_text
+I/Exam: TEXT: 
+                    In Java the == operation performs the same function as .equals() method in java
+                
+I/Exam: END_TAG: question_text
+I/Exam: TEXT: 
+                
+I/Exam: START_TAG: answer
+I/Exam: TEXT: false
+I/Exam: END_TAG: answer
+I/Exam: TEXT: 
+            
+I/Exam: END_TAG: question
+...
+</pre>
+<p>Next do the same for attributes and see what get methods are available to collect attributes associated with the tags. Output the attribute values to the logcat terminal as well.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2)</span></p>
+<p>Now comes the important part. Use the information discovered in problem 1 to parse the file and create an <span class="code">ArrayList&lt;Question&gt;</span> of the question objects represented in the file. Return those questions instead of the sample set at the end of the <span class="code">pullParseFrom</span> method.</p>
+<p>Run the app. You should now see the questions from the XML file presented to the viewer. </p>
+<p>Congratulation, you should now be able to easily parse XML data files whenever necessary.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 3)</span></p>
+<p>Make up a representative XML exam file and answer key that demonstrates what you plan to use for Assignment #1. Add those files to as a raw resource to the app. You don't have parse it now, but we want to see what you have in mind for assignment #1 (it might help shape our future exercises).</p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Optional)</span></p>
+<p>Notice the demo code, and probably your answer code, again forgets which question it was on when you rotate the device between landscape and portait orientation. But notice also that each time you rotate it re-parses the datafile. </p>
+<p>Can you modify the code so that not only the current question is remembered but the file is not re-parsed each time.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+</html>
