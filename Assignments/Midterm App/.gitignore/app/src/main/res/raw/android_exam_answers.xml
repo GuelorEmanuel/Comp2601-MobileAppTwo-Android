@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<answer_key>
+    <answer_text id ="1">d) Initial screen of an application</answer_text>
+    <answer_text id ="2">d) All of the above</answer_text>
+    <answer_text id ="3">a) Intent</answer_text>
+    <answer_text id ="4">a) send intent()</answer_text>
+    <answer_text id ="5">b) A class that does not have a name but have functionalities in it</answer_text>
+    <answer_text id ="6">c) Breaks the execution.</answer_text>
+    <answer_text id ="7">b) Http response</answer_text>
+    <answer_text id ="8">b) status code &gt; 100</answer_text>
+    <answer_text id ="9">d) A &amp; B</answer_text>
+    <answer_text id ="10">d) B &amp; C</answer_text>
+</answer_key>

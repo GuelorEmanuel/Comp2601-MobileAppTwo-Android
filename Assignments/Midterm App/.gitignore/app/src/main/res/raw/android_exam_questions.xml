@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<exam>
+    <question contributor="Guelor Emanuel">
+        <question_text id="1">
+            What is splash screen in android?
+        </question_text>
+        <email>ncstech07@gmail.com</email>
+        <choices>
+            <o id="a">Initial activity of an application</o>
+            <o id="b">Initial service of an application</o>
+            <o id="c">Initial method of an application</o>
+            <o id="d">Initial screen of an application</o>
+            <o id="e">None of the above</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="2">
+            What are the return values of onStartCommand() in android services?
+        </question_text>
+        <choices>
+            <o id="a">START_STICKY</o>
+            <o id="b">START_NOT_STICKY</o>
+            <o id="c">START_REDELIVER_INTENT</o>
+            <o id="d">All of the above</o>
+            <o id="e">None of the above </o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="3">
+            How to pass the data between activities in Android?
+        </question_text>
+        <choices>
+            <o id="a">Intent</o>
+            <o id="b">Content Provider</o>
+            <o id="c">Broadcast receiver</o>
+            <o id="d">A &amp; C</o>
+            <o id="e">None of the above</o>
+        </choices>
+    </question>
+
+    <question contributor="Guelor Emanuel">
+        <question_text id="4">
+            What is the life cycle of broadcast receivers in android?
+        </question_text>
+        <choices>
+            <o id="a">send intent()</o>
+            <o id="b">onRecieve()</o>
+            <o id="c">implicitBroadcast()</o>
+            <o id="d">sendBroadcast(), sendOrderBroadcast(), and sendStickyBroadcast().</o>
+            <o id="e">To save data</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="5">
+            What is an anonymous class in android?
+        </question_text>
+        <choices>
+            <o id="a">Interface class</o>
+            <o id="b">A class that does not have a name but have functionalities in it</o>
+            <o id="c">Java class</o>
+            <o id="d">Manifest file</o>
+            <o id="e">A class that is in another class</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="6">
+            What is breakpoint in android?
+        </question_text>
+        <choices>
+            <o id="a">Breaks the application</o>
+            <o id="b">Breaks the development code</o>
+            <o id="c">Breaks the execution.</o>
+            <o id="d">None of the above.</o>
+            <o id="e">The virtual android device</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="7">
+            What does httpclient.execute() returns in android?
+        </question_text>
+        <choices>
+            <o id="a">Http entity</o>
+            <o id="b">Http response </o>
+            <o id="c">Http result.</o>
+            <o id="d">None of the above.</o>
+            <o id="e">The virtual android device</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="8">
+            What is the HTTP response error code status in android?
+        </question_text>
+        <choices>
+            <o id="a">status code &lt; 100</o>
+            <o id="b">status code &gt; 100 </o>
+            <o id="c">status >= 400</o>
+            <o id="d">None of the above</o>
+            <o id="e">ca.json</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="9">
+            What are return types of startActivityForResult() in android?
+        </question_text>
+        <choices>
+            <o id="a">RESULT_OK</o>
+            <o id="b">RESULT_CANCEL </o>
+            <o id="c">RESULT_CRASH</o>
+            <o id="d">A &amp; B</o>
+            <o id="e">B &amp; C</o>
+        </choices>
+    </question>
+    <question contributor="Guelor Emanuel">
+        <question_text id="10">
+            What is the main difference between set and list in android?
+        </question_text>
+        <choices>
+            <o id="a">Both are same</o>
+            <o id="b">Set can't contain duplicate values </o>
+            <o id="c">List may contain duplicate values </o>
+            <o id="d">B &amp; C</o>
+            <o id="e">A &amp; C</o>
+        </choices>
+    </question>
+</exam>

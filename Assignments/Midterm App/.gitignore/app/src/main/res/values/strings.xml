@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Midterm App</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="question_text">Can a swallow fly?</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="optionOne">You selected  a)!</string>
+    <string name="optionTwo">You selected  b)!</string>
+    <string name="optionThree">You selected c)!</string>
+    <string name="optionFour">You selected d)!</string>
+    <string name="optionFive">You selected e)!</string>
+    <string name="not_complete_toast">Wrong!</string>
+
+    <string name="test_questions">...?...</string>
+    <string name="question_one">Test one...</string>
+    <string name="question_two">Test two...</string>
+    <string name="question_three">Test Three...</string>
+    <string name="question_four">Test Four...</string>
+    <string name="question_five">Test Five...</string>
+    <string name="didNotFinish">Please complete the rest of the quiz</string>
+</resources>
