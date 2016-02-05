@@ -19,4 +19,11 @@
     <string name="question_four">Test Four...</string>
     <string name="question_five">Test Five...</string>
     <string name="didNotFinish">Please complete the rest of the quiz</string>
+    <string name="title_activity_submit">Submit</string>
+    <string name="title_activity_submit_quiz">SubmitQuiz</string>
+    <string name="tittle_activity_fill_name">Confirm</string>
+    <string name="givenName">Please enter your First Name</string>
+    <string name="lastNameTemp">Please Enter your last name</string>
+    <string name="stuID">Please enter your student id</string>
+    <string name="exam_instruction">Please Fill in</string>
 </resources>

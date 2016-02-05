@@ -9,12 +9,16 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 
-/**
- * Created by Guelor on 2016-02-03.
+
+/*
+   By: Guelor Emanuel
+   Student ID: 100884107
+   Class: Comp2601 Assignment1
  */
+
+
 public class Exam {
     private static final String TAG = Exam.class.getSimpleName();
-
     //XML tags used to define an exam of multiple choice questions.
     public static final String XML_EXAM = "exam";
 
@@ -25,8 +29,10 @@ public class Exam {
         String question   ="";
         String choice    = "";
         String email     = "";
+
         // Get our factory and create a PullParser
         XmlPullParserFactory factory = null;
+
         try {
             factory = XmlPullParserFactory.newInstance();
             XmlPullParser xpp = factory.newPullParser();
@@ -47,24 +53,19 @@ public class Exam {
                         }else {
                             isQuestion = false;
                         }
-
-
-
                         break;
 
                     case XmlPullParser.TEXT:
                         if (isQuestion) {
                             System.out.println("Tetsts:: "+xpp.getAttributeCount() +" "+ xpp.getText().trim());
                             question   = xpp.getText().trim();
-                           // questionID = xpp.getAttributeValue(1);
                             isQuestion = false;
                         }else {
-                            System.out.println("Tetsts:: "+xpp.getAttributeCount() +" " + xpp.getText().trim());
+                            System.out.println("Tests:: "+xpp.getAttributeCount() +" " + xpp.getText().trim());
                             isQuestion = true;
                             choice = xpp.getText().trim();
                             email  = xpp.getText().trim();
                         }
-
                         break;
 
                     case XmlPullParser.END_TAG: //XML closing tags
@@ -73,30 +74,23 @@ public class Exam {
                         }
                         if (xpp.getName().trim().equals("o")){
                             questions.get(questions.size()-1).setChoices(choice);
+                            System.out.println("Tests::::: " + (questions.size()-1));
                         }
                         if (xpp.getName().trim().equals("email")){
                             questions.get(questions.size()-1).setEmail(email);
                         }
-
                         break;
-
                     default:
                         break;
                 }
-
-
                 //iterate
                 eventType = xpp.next();
-
             }
-
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
-
         return questions;
-
     }
 }

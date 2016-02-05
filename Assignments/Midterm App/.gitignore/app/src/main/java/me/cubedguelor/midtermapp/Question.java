@@ -2,9 +2,13 @@ package me.cubedguelor.midtermapp;
 
 import java.util.ArrayList;
 
-/**
- * Created by Guelor on 2016-02-03.
+
+/*
+   By: Guelor Emanuel
+   Student ID: 100884107
+   Class: Comp2601 Assignment1
  */
+
 public class Question {
     //XML tags the define Question properties
     /*public static final String XML_QUESTION = "question";
@@ -13,12 +17,14 @@ public class Question {
     public static final String XML_ANSWER_CHOOSEN_TEXT = "answer";
     public static final String XML_ATTR_CONTRIBUTER = "contributor";*/
 
-    private String               mQuestionString; //id of string resource representing the question
+    private String                mQuestionString; //id of string resource representing the question
     private String                mEmail; //author or contributor of the question
+    private String                mAnswerChoice;
     private ArrayList<String>     choices;
     private String                mQuestionID;
     private boolean               mDidAnswer;
     private int                   mChoiceID;
+
 
     public Question(String questionID, String questionString){
         mQuestionID      = questionID;
@@ -74,4 +80,11 @@ public class Question {
         return mQuestionString;
     }
 
+    public void setAnswerChoice(String answerChoice) {
+        mAnswerChoice = answerChoice;
+    }
+
+    public String getAnswerChoice() {
+        return mAnswerChoice;
+    }
 }
