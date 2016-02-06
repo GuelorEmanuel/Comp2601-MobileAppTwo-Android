@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">JSON Weather Data</string>
+    <string name="title_location_name">Enter location for weather</string>
+    <string name="title_location_hint">city,country code (ottawa,ca)</string>
+    <string name="action_location_button">Send</string>
+    <string name="action_return_button">Return</string>
+    <string name="action_clear_button">Clear</string>
+
+    <string name="title_error_message">Error Message</string>
+    <string name="title_city_name">City Name</string>
+    <string name="title_temperature">Temperature</string>
+    <string name="title_min_temperature">Minimun Temperature</string>
+    <string name="title_max_temperature">Maximun Temperature</string>
+    <string name="title_weather_description">Description</string>
+
+    <string name="error_unknownhost">Unknown Host Exception</string>
+    <string name="dialog_title">Retrieving Weather Data</string>
+    <string name="dialog_message">Waiting ...</string>
+
+
+</resources>

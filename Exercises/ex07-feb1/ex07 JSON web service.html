@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}.red {
+	color: #F00;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 07 JSON-based Web API</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p>The purpose of this exercise is to get you started with JSON (javascript object notation) in the context of using a Web API that returns JSON data.</p>
+<p>IMPORTANT: For this class exercise you will need to get yourself an openweathermap appid to use their API. You can sign up for a free account (which gets you an appid at): <a href="http://openweathermap.org/appid">http://openweathermap.org/appid</a></p>
+<p>(In the last year or so many of the web API's have gone to requiring some kind of app id.)</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Background:</span></p>
+<p>Web API's are the new &quot;user interface&quot; -a &quot;user interface&quot; for apps instead of people. Here we will explore the <a href="http://openweathermap.org">http://openweathermap.org</a> service that you can query with HTTP GET messages and get JSON data back. The <a href="http://www.programmableweb.com">programmable web</a> site lists some 14,500 web API's (and provides tutorial material on developing web API's). Some key technologies are HTTP, REST, XML, JSON. In some domains XML dominates  the data interchange format in others JSON dominates. The trend seems to be towards more and more JSON.<br>
+</p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1 -Test Your App ID</span></p>
+<p>Open your favourite browser on your computer then using your appid query the following URL including the query parameters after the &quot;?&quot;. <span class="red">(Note the appid provided in this demo link is fake. You will have to use your own appid for things to work.)</span></p>
+<pre>http://api.openweathermap.org/data/2.5/weather?q=ottawa,ca&amp;units=metric&amp;appid=9004ee31d851396dcf03893cfb2b7563
+</pre>
+<p>&nbsp;</p>
+<p>You should see the the browser (Safari in this case) render the JSON object returned by the HTTP get request. In this exercise we will build an android app to obtain and parse this kind of data. Some things to note: it is JSON format, it has weather data for Ottawa, and it has a &quot;cod&quot; response code of 200. 200 is the HTTP response status code for success.</p>
+<p><img src="images/problem1.png" width="598" height="212" alt=""/></p>
+<p>&nbsp;</p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Demo Code</span></p>
+<p>Open the demo code provided. It provides two activities and layouts which we will use to build the app. The main activity layout has a UI with a text edit field to type in the city and country code information, and two buttons labelled &quot;SEND&quot; and &quot;CLEAR&quot;. SEND is intended to send the HTTP get request to the openweathermap.org server and CLEAR erases the text field. </p>
+<p>The second activity <span class="code">WeatherActivity.java</span> provides a place to display the data obtained from the weather service. This second activity is complete and should not need modification.</p>
+<p><span class="red">The Demo code provided will not run as intended until you hard-code in your appid obtained from openweathermap.org.</span> Then you can launch the demo code and it should look as follows:</p>
+<p><img src="images/demo1.png" width="616" height="219" alt=""/><br>
+</p>
+<p>&nbsp;</p>
+<p>If you enter a location like &quot;ottawa,ca&quot; and press SEND you will just see the progress dialog launch and wait, and wait, and wait..., as no data request is being sent yet.</p>
+<p>&nbsp;</p>
+<p><img src="images/demo2.png" width="612" height="516" alt=""/></p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2 -Sending the GET request</span></p>
+<p>HTTP provides several &quot;verbs&quot;: GET, POST, PUT, UPDATE, DELETE. When you type a URL in your browser address bar and hit enter it makes a GET request to server at that URL. The URL can contain query parameters denoted by a &quot;?&quot;. Notice the query parameter data is quite visible. (You probably would not want your credit card number appearing in the address bar of a browser.) </p>
+<p>REST (Representational State Transfer) is an architectural guideline for what HTTP verbs you should use for what and what kind of data to transfer. We will explore aspects of REST throughout the course. The GET request with JSON response is just one use-case of REST.</p>
+<p>Recall that Android does not want network requests made on the main UI thread. You will need to implement an AsyncTask, as from last week's exercises, to do HTTP requests of a network server.</p>
+<p>To make an HTTP GET request you do the following steps:</p>
+<p>1) Create a url string for your request. for example (the city information should come from the textfield on the UI):</p>
+<pre>String&#32;mWeatherString&#32;=&#32;"http://api.openweathermap.org/data/2.5/weather?q=ottawa,ca&amp;units=metric&amp;appid=YOUR_APPID_HERE";<br>
+</pre>
+<p>2) Create a URL object initialized with the url string.</p>
+<pre>URL&#32;mWeatherUrl&#32;=&#32;null;<br><br>try&#32;{<br>&#32;&#32;&#32;&#32;mWeatherUrl&#32;=&#32;new&#32;URL(mWeatherString);<br>}&#32;
+catch&#32;(MalformedURLException&#32;e)&#32;{
+  e.printStackTrace();<br>}<br><br>
+</pre>
+<p>3) Create an HTTP connection using the URL object, wrap it in an inputStream and bufferedReader and read the data response from the server.</p>
+<pre>try&#32;{<br>&#32;&#32;&#32;&#32;mConnection&#32;=&#32;(HttpURLConnection)&#32;mWeatherUrl.openConnection();<br>&#32;&#32;&#32;&#32;InputStream&#32;mInStream&#32;=&#32;new&#32;BufferedInputStream(mConnection.getInputStream());<br>&#32;&#32;&#32;&#32;mReader&#32;=&#32;new&#32;BufferedReader(new&#32;InputStreamReader(mInStream));<br>&#32;&#32;&#32;&#32;mStrBuffer&#32;=&#32;new&#32;StringBuffer();<br>&#32;&#32;&#32;&#32;String&#32;line&#32;=&#32;"";<br><br>&#32;&#32;&#32;&#32;while&#32;((line&#32;=&#32;mReader.readLine())&#32;!=&#32;null)&#32;{<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;mStrBuffer.append(line);<br>&#32;&#32;&#32;&#32;}<br><br>}&#32;catch&#32;(UnknownHostException&#32;e){<br>&#32;&#32;&#32;&#32;e.printStackTrace();<br>&#32;&#32;&#32;&#32;Log.i(TAG,&#32;getString(R.string.error_unknownhost));<br>}&#32;catch&#32;(IOException&#32;e)&#32;{<br>&#32;&#32;&#32;&#32;e.printStackTrace();<br>}&#32;finally&#32;{<br>&#32;&#32;&#32;&#32;if&#32;(mConnection&#32;!=&#32;null)&#32;{<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;mConnection.disconnect();<br>&#32;&#32;&#32;&#32;}<br>&#32;&#32;&#32;&#32;try&#32;{<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(mReader&#32;!=&#32;null)&#32;{<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;mReader.close();<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}<br>&#32;&#32;&#32;&#32;}&#32;catch&#32;(IOException&#32;e)&#32;{<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;e.printStackTrace();<br>&#32;&#32;&#32;&#32;}<br>}<br><br>
+</pre>
+<p>4) Finally print the received JSON string to the logcat to see what you have.</p>
+<pre>if&#32;(mStrBuffer&#32;!=&#32;null){<br>&#32;&#32;&#32;&#32;Log.i(TAG,&#32;mStrBuffer.toString());<br>}&#32;else&#32;{<br>&#32;&#32;&#32;&#32;Log.i(TAG,&#32;&quot;ERROR: not response data received&quot;;<br>}<br>
+</pre>
+<p>Recall to get this all to work you will have to make use of an AsyncTask since the HTTP connection to the server cannot be made on the main UI thread. You would presumably launch the async. task as a result of the user pressing the &quot;SEND&quot; button. Recall the async work is done in the </p>
+<pre>doInBackground()</pre>
+
+<p>method of the AsyncTask object.</p>
+<p>For this problem demonstrate that you can display the JSON weather data string returned by the HTTP GET on the logcat terminal. </p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 3 Parsing the JSON Data</span></p>
+<p>Now we want to parse the JSON data string obtained from the weather server and display parts of the parsed JSONObject on the logcat terminal. Do this in the </p>
+<pre>onPostExecute(String&#32;result)
+</pre>
+<p>method of the AsyncTask. Specifically you want your <span class="code">doInBackground()</span> method to return the JSON string result which will then be passed as the input parameter to the <span class="code">onPostExecute(String result)</span>. </p>
+<p>The JSON string can be parsed into an instance of <a href="http://developer.android.com/reference/org/json/JSONObject.html">JSONObject</a>. </p>
+<p>You can parse the JSON data string as follows.</p>
+<pre>protected&#32;void&#32;onPostExecute(String&#32;result)&#32;{<br>&#32;&#32;&#32;&#32;super.onPostExecute(result);<br>&#32;&#32;&#32;&#32;JSONObject&#32;mJSONWeatherData&#32;=&#32;null;<br><br>&#32;&#32;&#32;&#32;try&#32;{<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;mJSONWeatherData&#32;=&#32;new&#32;JSONObject(result);<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Log.i(TAG,&#32;mJSONWeatherData.toString());<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+        progress.dismiss();
+<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32; if&#32;(mJSONWeatherData.getInt("cod")&#32;==&#32;200)
+          Log.i(TAG, &quot;SUCCESS&quot;);<br><br><br>&#32;&#32;&#32;&#32;}&#32;catch&#32;(JSONException&#32;e)&#32;{<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;e.printStackTrace();<br>&#32;&#32;&#32;&#32;}<br>}
+
+</pre>
+<p>Look up how individual fields of the <a href="http://developer.android.com/reference/org/json/JSONObject.html">JSONObject</a> can be accessed. Display the parsed JSONObject on the logcat terminal. Actually extract some of the relevant fields out of the JSON object, don't just dump the <span class="code">toString()</span> of the whole object.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 4: Displaying the Weather Information</span></p>
+<p>Finally, instead of just displaying your weather information on the logcat terminal, create the appropriate <span class="code">Intent</span> to launch the <span class="code">WeatherActivity</span> to display (and if need be parse) the weather data. The code for <span class="code">WeatherActivity</span> is provided and should not need modification but feel free to modify it if you want.</p>
+<p>The WeatherActivity screen might look as follows:</p>
+<p><img src="images/problem4.png" width="338" height="466" alt=""/></p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+</html>
