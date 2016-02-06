@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}.red {
+	color: #F00;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 08 JSON-based Server</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p>The purpose of this exercise is to revisit the  JSON (javascript object notation) API use-case from the previous exercise but this time  using our own server attached to the private network router in the classroom. </p>
+<p>Here we will work  with the Android client app. In next week's execises we will look at building these kind of servers using javascript and the Node.js  execution environment. (This is the technology currently used in COMP 2406.) Part of this exercise is to ensure you have node.js installed on your computer.</p>
+<p>IMPORTANT: For part  of this class exercise you will need to install <a href="https://nodejs.org/en/">Node.js</a> on your computer.</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Background:</span></p>
+<p>The prof. or TA will start a node.js  server and then give you the IP address and port number to access it. Since we are on a private network and not using a DNS server to translate domain names  we will  work with the raw IP addresses.</p>
+<p>The classroom router will show up as <span class="black-bold">NelASUS00442</span> in the available wifi networks. (There should be a 2.4GHz and 5GHz version. You can use either.) The wifi password for the network is <span class="black-bold">Nel00442</span>.</p>
+<p>The demonstration server supports the following simple API illustrated with a sample data word: &quot;Bird&quot;.</p>
+<p>HTTP GET</p>
+<p><span class="code">/add?word=Bird<br>
+/move?word=Bird&amp;direction=right</span> [also left, up, down]<br>
+<span class="code">/pollData</span></p>
+<p>HTTP PUT, POST:</p>
+<p><span class="code">/add</span><br>
+JSON message body: <span class="code">{word:Bird}</span> </p>
+<p><span class="code">/move</span><br>
+JSON message body: <span class="code">{word:Bird,direction:right}</span> </p>
+<p><span class="code">/pollData</span><br>
+JSON message body: <span class="code">{}</span></p>
+<p>All of these API methods respond back to the client with a JSON string representing an array of all the current words and their locations.</p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1 -Test Server from a Browser</span></p>
+<p>The classroom overhead projector will display a browser with a simple javacript app that displays all the current names added to the server using the API. We want you to add yours as well using just a browser.</p>
+<p>Open your favourite browser on your computer then using the IP address and port number of the server visit the following URL<span class="red"></span></p>
+<pre>http://XXX.XXX.XX.XXX:PORT/add?word=YOUR_FIRST_NAME
+</pre>
+<p>&nbsp;</p>
+<p>Here <span class="code">XXX.XXX.XX.XXX</span> is the IP address provided, <span class="code">PORT</span> is the 4 digit port number provided for you and, of course, <span class="code">YOUR_FIRST_NAME</span> should be your first name. </p>
+<p>If successful you should see your name appear on the classroom screen showing all the names currently on the server. You should also see if the server's console window shows your GET request, but since there are many students in the class you might not see it go by.</p>
+<p>In the browser you are using you should see the JSON object returned from your request.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2</span></p>
+<p>The demo code provides an android app that is essentially the answer code from the previous openweathermap exercise with 4 additional buttons: UP, DOWN, LEFT, RIGHT added to the main activity layout XML. </p>
+<p>For this problem you should modify the demo code (weather app) as follows:</p>
+<p>1) The user should be able to type a name into the text field already there and when the SEND button is pressed an HTTP GET request should be sent to our server and you should see the name appear on the classroom overhead screen in the web page app running there. (Note if you try to add the same name twice it will not be added a second time.) Recall the provided weather app is making GET requests when it asks for weather data.</p>
+<p>2) Add the necessary code so that pressing the UP, DOWN, RIGHT, or LEFT button will send a GET request to the server to move the name currently in the text field. You should see it nudge a little in the direction you requested.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 3 -Running Your Own Node.js Static Server</span></p>
+<p>Here you will run your own static file server on the private network. </p>
+<p>Provide the professor or TA with the IP address of your computer  when connected to the private classroom network. He will forward a port on the router for your IP address and tell you the port number your server should use. </p>
+<p>Modify the code in the file <span class="code">basic_static_server.js</span> javascript file to use the port number given you (instead of the current port number of 3000). <span class="red">Don't use 3000 as that will already be in use for the classroom server used for the previous problems. </span></p>
+<p>Open a Terminal window where the file <span class="code">basic_static_server.js</span> is located and execute:</p>
+<pre>node basic_static_server.js
+</pre>
+<p>If node.js is installed properly it should start the server. (Look for an acknowledgement in the terminal window like: <span class="code">Server Running at http://127.0.0.1:3000  CNTL-C to quit</span>)</p>
+<p>You can access the server from a browser on the same machine by visiting the <span class="code">URL http://localhost:PORT/index.html</span>. It should bring up a simple web page like the following. </p>
+<p><img src="images/problem4.png" width="455" height="477" alt=""/></p>
+<p>Study the demo code then modify the <span class="code">index.html</span> file and maybe change the image to make a web page of your own.</p>
+<p>To test your server the prof. or TA will visit your server at the <span class="code">http://XXX.XXX.X.XX:PORT/index.html</span>. where <span class="code">XXX.XXX.X.XX</span> is the IP address of your machine and <span class="code">PORT</span> is the port number assigned to you. If Successful we should see your server serve us your  web page on our own device.</p>
+<p>Also: if you want to run a browser on an android virtual device running on the same machine as your server you will have to use IP address <span class="code">http://10.0.2.2:PORT/...</span> instead of <span class="code">localhost</span> (<span class="code">127.0.0.1</span>). That is because <span class="code">localhost</span> on the AVD would refer to the AVD itself and not your hosting computer. For more see: <a href="http://developer.android.com/tools/devices/emulator.html#networkaddresses">http://developer.android.com/tools/devices/emulator.html#networkaddresses</a></p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p></p>
+<p class="segment-header"><span class="black-bold">OPTIONAL PART: Problem 4 -POST or PUT Requests</span></p>
+<p>Examine the documentation of the <a href="http://developer.android.com/reference/java/net/HttpURLConnection.html">HttpURLConnection</a> class. According to the documentation you  should be able to send PUT or POST requests instead of GET requests. For a PUT or POST message the data is passed in the body of the HTTP message, not the URL portion of the request.</p>
+<p>When sending a post message you should also invoke the <span class="code">setChunkedStreamingMode(0)</span> method described to allow data message to be send in chunks. The server is set up to handle data coming in chunks.</p>
+<p>Modify your code from Problem 2 to send POST or PUT requests to the server.</p>
+<p>Note you can also test the server's POST handling by sending a CURL request. From a terminal window on a Mac execute</p>
+<p class="code">curl -d '{&quot;word&quot;:&quot;Lisa&quot;}' &quot;http://localhost:3000/add&quot;</p>
+<p>For more information about CURL see: <a href="Curl resource: http://curl.haxx.se/docs/httpscripting.html">http://curl.haxx.se/docs/httpscripting.html</a> and google &quot;curl on Mac&quot; etc.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+</html>

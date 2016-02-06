@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/text_city_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_city_name"
+            android:textSize="32dp"/>
+        <TextView
+            android:id="@+id/text_city_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="32dp"/>
+
+        <TextView
+            android:id="@+id/text_temperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_temperature"
+            android:textSize="32dp"/>
+        <TextView
+            android:id="@+id/text_temperature_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="32dp"/>
+
+        <TextView
+            android:id="@+id/text_mintemperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_min_temperature"
+            android:textSize="32dp"/>
+        <TextView
+            android:id="@+id/text_mintemperature_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="32dp"/>
+
+        <TextView
+            android:id="@+id/text_maxtemperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_max_temperature"
+            android:textSize="32dp"/>
+        <TextView
+            android:id="@+id/text_maxtemperature_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="32dp"/>
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_weather_description"
+            android:textSize="32dp"/>
+        <TextView
+            android:id="@+id/text_description_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="32dp"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_return_button"
+            android:id="@+id/button_return_weather" />
+
+    </LinearLayout>
+</ScrollView>

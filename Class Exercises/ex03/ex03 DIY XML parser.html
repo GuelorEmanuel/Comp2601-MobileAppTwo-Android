@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}.red {
+	color: #F00;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 03 DIY XML Parser</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p>The purpose of this exercise is to review basic java programing by building your own XML parsing code to parse a datafile within an android application. We will  look at how to read data files contained as raw resources in your android app.</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Background:</span></p>
+<p>The two most common data formats for data exchanged between applications is XML and JSON. Here we work with XML. You are already getting familiar with XML since the android layout resources and manifest are XML files. Review the basics of XML at this <a href="http://www.w3schools.com/xml/default.asp">W3 schools link</a> before coming to the exercise.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Demo Code</span></p>
+<p>Open and run the project in the <span class="code">demo_code</span> folder. It creates an app that lets you answer true-false exam questions by pressing the &quot;True&quot; or &quot;False&quot; buttons. You can move from question to question by pressing the &quot;Next&quot; and &quot;Previous&quot; buttons. Each time you answer a question a <span class="black-bold">toast</span> pops up to tell you if you answered correctly or not.  The application screen should look like this:</p>
+<p><img src="images/demo1.png" width="401" height="635" alt=""/></p>
+<p>Observe also that currently if you rotate your device between landscape and protrait the application &quot;forgets&quot; which question it was on and goes back to the first question. (You will fix that as part of the exercise.) </p>
+<p>Explore also the following in the demo code:</p>
+<ul>
+<li>The exam questions are currently obtained from an sample exam supplied by the <span class="code">Exam</span> class.</li>
+<li>How toasts are made.</li>
+<li>How the arrow icons are put on the buttons.</li>
+<li>That there are multiple arrow icon image files to handle different screen resolutions.</li>
+</ul>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1)</span></p>
+<p>Observe that among the xml resources in the project is a <span class="code">res/raw/comp2601exam.xml</span> file. Open that file and it should look similar to the following: </p>
+<p><img src="images/problem1-2.png" width="1057" height="344" alt=""/></p>
+<p>For this problem we want you to be able to read the contents of this file and show each line on the logcat console window.</p>
+<p>You can open the resource file and wrap it in a java <span class="code">InputStream</span> as follows.</p>
+<pre>InputStream&#32;iStream&#32;=&#32;getResources().openRawResource(R.raw.comp2601exam);</pre>
+<p>You can read the file a line-at-a-time by wrapping the <span class="code">InputStream</span> instance in a <span class="code">BufferedReader</span> and looping through the lines as follows:</p>
+<p>&nbsp;</p>
+<pre>InputStream&#32;iStream&#32;=&#32;getResources().openRawResource(R.raw.comp2601exam);<br><br>BufferedReader&#32;bReader&#32;=&#32;new&#32;BufferedReader(new&#32;InputStreamReader(iStream));<br><br>String&#32;readLine&#32;=&#32;null;&#32;//input&#32;line&#32;read&#32;from&#32;file<br>try{<br>&#32;&#32;&#32;&#32;while((readLine&#32;=&#32;bReader.readLine())&#32;!=&#32;null){<br>&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Log.i(TAG,&#32;readLine);<br><br>&#32;&#32;&#32;&#32;}<br>&#32;&#32;&#32;&#32;bReader.close();<br><br>}<br>catch(IOException&#32;e)&#32;{<br>&#32;&#32;&#32;&#32;e.printStackTrace();<br>}</pre>
+<p>At this point you should be able to see the line's of the file on the logcat console:</p>
+<p><img src="images/problem1-3.png" width="675" height="182" alt=""/></p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2)</span></p>
+<p class="segment-header">DIY XML Parser</p>
+<p>Now comes the fun part. Using only simple java classes: <span class="code">String</span>, <span class="code">ArrayList</span> etc. write a parser to convert the XML file into an <span class="code">Arraylist&lt;Question&gt;</span> of question objects. Important: we are writing our own parser, in a future class exercise we will use a dedicated java class that does  XML parsing.</p>
+<p>Basically we want you to replace the line of code in the <span class="code">onCreate()</span> method:</p>
+<pre>questions&#32;=&#32;Exam.sampleExam1();<br>
+</pre>
+<p>with this code instead:</p>
+<pre>InputStream&#32;iStream&#32;=&#32;getResources().openRawResource(R.raw.comp2601exam);<br>BufferedReader&#32;bReader&#32;=&#32;new&#32;BufferedReader(new&#32;InputStreamReader(iStream));<br>questions&#32;=&#32;Exam.parseFrom(bReader);<br>
+</pre>
+<p>So for this to work you need to write the <span class="code">static</span> <span class="code">Exam</span> class method <span class="code">ArrayList&lt;Question&gt; parseFrom(BufferedReader)</span>.</p>
+<p>Here is a strategy for how it might work (but you are free to do whatever you want):</p>
+<p>Loop though the file and whenever a line starts with an opening XML tag, you know you are starting data collection for a new item. Whenever a line contains a closing XML tag you know the data you have been collecting is complete. Use java <span class="code">String</span> methods to determine whether, for example, a line starts with a particular XML tag or not, or to extract data between tags.</p>
+<p>The <span class="code">Exam</span> and <span class="code">Question</span> class already contain definitions of the XML tags that pertain to them. </p>
+<p>The data file we are using is very &quot;friendly&quot; XML: tags either appear on their own line, or a line starts and ends with tags with data in between. Also there are no attributes in the XML tags nor any self-closing tags. Hence reading a file a line at a time should work fine.</p>
+<p>One suggestion is to have variables that represent the current tag you are working on and the current text data collected so far for the tag. When you see the closing tag you know you have finished collecting the data.</p>
+<p>In the end your method should return an <span class="code">ArrayList&lt;Question&gt;</span> parsed from the XML file.</p>
+<p>Modify the code as needed so that the app uses the parsed data rather than the sample set of questions supplied by the <span class="code">Exam</span> class.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 3)</span></p>
+<p>Finally, you will notice that when you rotate the test device between landscape and portrait mode the application &quot;forgets&quot; which question it was on and displays the first question.</p>
+<p>Fix this using the <span class="code">savedInstanceState</span> Bundle accessible via the activity life cycle methods. Specifically overwrite the <span class="code">onSaveInstanceState(Bundle savedInstanceState)</span> method and have it save the current question index in the <span class="code">savedInstanceState</span>. (You should probably do the same for the <span class="code">onRestoreInstanceState() </span>method but I won't make a difference here.)</p>
+<p>Then, modify the <span class="code">onCreate(Bundle savedInstanceState)</span> method to recover the question index. </p>
+<p>If necessary, review the lifecycle for android activities as described in last week's class exercise 02.</p>
+<p>&nbsp;</p>
+
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+</html>

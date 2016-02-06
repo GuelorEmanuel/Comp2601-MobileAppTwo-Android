@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_location_caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_location_name"
+            android:textSize="32dp"/>
+        <EditText
+            android:id="@+id/edit_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/title_location_hint"
+            android:textColorHint="#FF0000"/>
+
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/action_location_button"
+                android:layout_weight="1"
+                android:id="@+id/button_send_location" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/action_clear_button"
+                android:layout_weight="1"
+                android:id="@+id/button_clear" />
+        </LinearLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="3"
+            android:rowCount="5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text=""
+                android:id="@+id/textView"
+                android:layout_row="0"
+                android:layout_column="1" />
+
+            <Button
+                android:id="@+id/buttonUp"
+                android:layout_column="1"
+                android:layout_row="2"
+                android:text="@string/action_up_button" />
+            <Button
+                android:id="@+id/buttonDown"
+                android:layout_column="1"
+                android:layout_row="4"
+                android:text="@string/action_down_button" />
+            <Button
+                android:id="@+id/buttonLeft"
+                android:layout_column="0"
+                android:layout_row="3"
+                android:text="@string/action_left_button" />
+            <Button
+                android:id="@+id/buttonRight"
+                android:layout_column="2"
+                android:layout_row="3"
+                android:text="@string/action_right_button" />
+
+        </GridLayout>
+    </LinearLayout>
+</ScrollView>
