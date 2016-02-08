@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">JSON Weather Data</string>
+    <string name="title_name">Enter Name</string>
+    <string name="title_name_hint">John</string>
+    <string name="action_location_button">Send</string>
+    <string name="action_return_button">Return</string>
+    <string name="action_clear_button">Clear</string>
+    <string name="action_up_button">UP</string>
+    <string name="action_down_button">DOWN</string>
+    <string name="action_left_button">LEFT</string>
+    <string name="action_right_button">RIGHT</string>
+
+    <string name="title_error_message">Error Message</string>
+    <string name="title_city_name">City Name</string>
+    <string name="title_temperature">Temperature</string>
+    <string name="title_min_temperature">Minimun Temperature</string>
+    <string name="title_max_temperature">Maximun Temperature</string>
+    <string name="title_weather_description">Description</string>
+
+    <string name="error_unknownhost">Unknown Host Exception</string>
+    <string name="dialog_title">Connecting to Server</string>
+    <string name="dialog_message">Waiting ...</string>
+
+
+</resources>
