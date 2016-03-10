@@ -1,0 +1,128 @@
+package exercise5;
+
+public class Encoder {
+	
+	private  int[] barkerCode;
+	private int[] data;
+	
+	public Encoder(int barkerCodeLength, int dataLength) {
+		barkerCode = random(barkerCodeLength);
+		data       = random(dataLength);
+	}
+	
+	public int [] encoder(int[] data, int[] barkerCode ) {
+		int[][] replineData = repline(data, barkerCode.length);
+		int[][] repColumn   = repColumn(barkerCode, replineData[0].length); 
+		
+		return reshape(xor(replineData, repColumn));
+	}
+	
+	public int[] random(int length) {
+		int[] data = new int[length];
+		for (int i = 0;  i < length; i++) {
+            int randomBit = (int)(2 * Math.random());  // add either 0 or 1
+            data[i] = randomBit;
+        }
+		return data;
+	}
+	
+	
+	
+	public int[][] generateMatrix(int[] data, int numOfReplicate) {
+		int[][] replineData = new int[numOfReplicate][data.length];
+		
+		for (int i = 0; i < replineData.length; i++)
+			for (int j = 0; j < replineData[0].length; j ++) {
+				replineData[i][j] = data[j];
+			}
+		return replineData;
+			
+	}
+	
+	public int[][] repline(int[] data, int lengthCode) {
+		return generateMatrix(data, lengthCode);
+	}
+	
+	public int[][] repColumn(int[] code, int lengthData){
+		int[][] original =  generateMatrix(code, lengthData);
+		
+        return transposeMaxtrix(original);
+	}
+	
+	public int[][] xor(int d[][], int c[][]) {
+		int[][] transposeData = new int[d.length][d[0].length];
+		for (int i = 0; i < d.length; i++) {
+    		for (int j = 0; j < d[0].length; j++) {
+    			transposeData[i][j] = d[i][j] ^ c[i][j];
+    		}
+    	}
+
+		return transposeData;
+	}
+	
+	public int[][] transposeMaxtrix(int[][] matrix) {
+		int[][] transposeData = new int[matrix[0].length][matrix.length];
+		if (matrix.length > 0) {
+        	for (int i = 0; i < matrix[0].length; i++) {
+        		for (int j = 0; j < matrix.length; j++) {
+                    transposeData[i][j] = matrix[j][i];
+                }
+            }
+        }
+        return transposeData;
+	}
+	
+	public void printMatrix(int[][] data) {
+		for (int i = 0; i < data.length; i++){
+			for (int j = 0; j < data[0].length; j ++) {
+				System.out.print(data[i][j]);
+			}
+		   System.out.println();
+		}
+	}
+	
+	public void displayDefaultEncoder() {
+		printSequence(encoder(data, barkerCode));
+	}
+	
+	public void printSequence(int[] data) {
+		for (int i = 0; i < data.length; i++) {
+			System.out.print(data[i]);
+		}
+		System.out.println();
+	}
+	
+	public int[] reshape(int[][] data) {
+		int size = data.length*data[0].length;
+		int [] reshapedData = new int[size];
+		int counter = 0;
+		
+		for (int i = 0 ; i < transposeMaxtrix(data).length ; i++) {
+		    for (int j = 0 ; j < transposeMaxtrix(data)[0].length; j++) {
+		    	reshapedData[counter] = transposeMaxtrix(data)[i][j];
+		    	counter++;
+		    }
+		}
+		return reshapedData;
+	}
+	
+	public void setBarkerCode(int[] code) {
+		barkerCode = code;
+	}
+	
+	public void setData(int[] newData) {
+		data = newData;
+	}
+	
+	public int[] getBarkerCode() {
+		return barkerCode;
+	}
+	
+	public int[] getData() {
+		return data;
+	}
+
+	
+	
+
+}

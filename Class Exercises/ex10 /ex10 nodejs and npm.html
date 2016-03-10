@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}.red {
+	color: #F00;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 10 Javascript and Node.js</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p class="red">[Important Note: This exercise must be completed and demo'ed during the class time. There will not be an opportunity to complete it later -accordingly it is scaled back a bit.]</p>
+<p>Programming with javascript -Part II. The purpose of this exercise is to introduce your to node.js based RESTful servers using javascript and make you aware of NPM modules. </p>
+<p>The servers we build to implement REST-like API's will be built in javascript (using the node.js environment). Node.js by itself is a very sparse environment and is intended to be used with the eco-system of node modules mainted at the NPM (node package manager) repository.</p>
+<p>The server provided with this exercise is built using only node.js native capabilities and does not yet employ any npm modules. Later in the course we will use servers that require modules like: express and sqlite3. In this class exercise we simply make you aware of npm by loading a simple module to help colour server console text (and to illustrate yet another javascript pitfall.)</p>
+<p>&nbsp;</p>
+<p>For this class exercise you will need <a href="https://nodejs.org/en/">Node.js</a> installed on your computer.</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Preliminary:</span></p>
+<p>Recall our server implements the following interface, or API.</p>
+<p>HTTP GET</p>
+<p><span class="code">/add?word=Bird<br>
+/move?word=Bird&amp;direction=right</span> [also left, up, down]<br>
+<span class="code">/pollData</span></p>
+<p>HTTP PUT, POST:</p>
+<p><span class="code">/add</span><br>
+JSON message body: <span class="code">{word:Bird}</span> </p>
+<p><span class="code">/move</span><br>
+JSON message body: <span class="code">{word:Bird,direction:right}</span> </p>
+<p><span class="code">/pollData</span><br>
+JSON message body: <span class="code">{}</span></p>
+<p>All of these API methods respond back to the client with a JSON string representing an array of all the  words currently resident in the server and their locations.</p>
+<p>Launch the server, browser app and android AVD as you did in the previous exercise. The instructions are repeated here. </p>
+<p>Locate the node.js <span class="code">jsonServer.js</span> file in the demo code. Open a terminal window at that location and launch the server by executing <span class="code">node jsonServer.js</span>. The server is now listening for HTTP requests.</p>
+<p>Open a browser and visit server at <span class="code">http://localhost:3000/canvasApp.html </span>and it should launch the app displaying some words and a moving word. (Recall <span class="code">localhost</span> refers to the special loopback IP address: <span class="code">127.0.0.1</span>.)</p>
+<p><img src="images/problem3.png" width="638" height="414" alt=""/></p>
+<p>&nbsp;</p>
+<p>Finally open the android studio project <span class="code">JSON client HTTP GET</span>. Start  a virtual device and then launch the app on the virtual device. (Note for this exercise it must be a virtual device. Your real device will not work with localhost.) Also notice in the android <span class="code">MainActivity.java</span> the app visits <span class="code">http://10.0.2.2:3000</span>. &quot;localhost&quot; on the AVD would refer to the AVD itself and we don't want that. The special IP address <span class="code">10.0.2.2</span> refers to the localhost of the machine hosting the AVD which is what we want. (If you do want to use your real device you can host your server via the classroom router as we did in the previous exercise.)</p>
+<p><img src="images/problem3-2.png" width="582" height="651" alt=""/></p>
+<p>&nbsp;</p>
+<p>Now that you have these three pieces up and running test the app by adding a few words using the AVD and moving them around and while doing so watch the output on the server console showing you information about requests it receives.</p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1 -The NPM colour Module.</span></p>
+<p>Using your android AVD (or a browser, or CURL) send a request to the server to add a word or move a word. The server console should show you some of the request details:</p>
+<p><img src="images/problem1-1.png" width="590" height="157" alt=""/></p>
+<p>&nbsp;</p>
+<p>It is going to be important to us when working with REST like request to spot the different HTTP verbs like  GET, POST, PUT etc. We will make use of an NPM module that allows us to easily colour the console text.</p>
+<p>Open a broswer and visit <a href="https://www.npmjs.com">https://www.npmjs.com</a>. This is the registry site for the eco-system of npm (node package manager) modules published contributed the node.js user community.</p>
+<p>Using the search bar search for &quot;colour&quot;. (not &quot;color&quot;). You should see the following:</p>
+<p><img src="images/problem1-2.png" width="893" height="489" alt=""/></p>
+
+<p>&nbsp;</p>
+<p>Choose the colour link and notice it provides a module that allows you to colour console output text.</p>
+<p><img src="images/problem1-3.png" width="791" height="667" alt=""/></p>
+<p>&nbsp;</p>
+<p>To make use of npm modules they must be installed in a <span class="code">node-modules</span> directory with your code and then <span class="code">required</span> in your <span class="code">.js</span> code file.</p>
+<p>Shut down your server (cntl-C) then from the same terminal window execute <span class="code">npm -v</span> to verify that npm is installed (it should have been installed automatically when you installed node.js). You should see the npm version number reported which confirms that npm is installed.</p>
+<p><img src="images/problem1-4.png"  alt=""/></p>
+<p>&nbsp;</p>
+<p>To install the colour module execute <span class="code">npm install colour</span>.</p>
+<p><img src="images/problem1-5.png" width="443" height="95" alt=""/></p>
+<p>&nbsp;</p>
+<p>Notice as a result of the install a <span class="code">node-modules</span> directory has been added which will contain all the npm modules you install. This directory should be in the same location as your <span class="code">jsonServer.js</span> file.</p>
+<p><img src="images/problem1-6.png" width="566" height="85" alt=""/></p>
+<p>&nbsp;</p>
+<p>Edit your <span class="code">jsonServer.js</span> file and add the following:<br>
+</p>
+<p>1) At the top of the file add </p>
+<p class="code">var colour = require('colour');</p>
+<p>2) Find the place in the code where the HTTP METHOD is being logged to the console and print any GET's in green and the POST's in red, and choose other colours for other HTTP verbs you might use.</p>
+<p>Restart your server and you should see the http methods, or verbs, shown in colour and easy to spot. (This kind of thing can be very helpful when monitoring and debugging your server code.)</p>
+<p><img src="images/problem1-7.png" width="601" height="157" alt=""/></p>
+<pre>&nbsp;
+</pre>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2 - A Cautionary Experiment.</span></p>
+<p>Shut down your server and with the terminal open on the same directory (containing your server and node_modules directory) execute<br>
+</p>
+<p class="code">node</p>
+<p>This will put node into its REPL (read-evalute-print-loop) mode. Here you can execute arbitary javascript statements. (It is a full interactive javascript execution environment).</p>
+<p>Try the following: 1+2 and you should see the result: 3.</p>
+<p><img src="images/problem2-1.png" width="378" height="106" alt=""/></p>
+<p>&nbsp;</p>
+<p>For fun, now try 0.1 + 0.2. Do you know why the result is not 0.3?</p>
+<p><img src="images/problem2-2.png" width="416" height="86" alt=""/></p>
+<p>This is a source of many bugs (not just in javascript).</p>
+<p>2) Now create a string <span class="code">var str = 'Louis';</span> and print its characters using both a c-style loop and a for-in loop.</p>
+<p><img src="images/problem2-3.png" width="663" height="462" alt=""/></p>
+<pre>&nbsp;
+
+</pre>
+<p>3) now <span class="code">require</span> the colour module and print the string in red.</p>
+<p><img src="images/problem2-4.png" width="494" height="165" alt=""/></p>
+<p>&nbsp;</p>
+<p>4) Re-run the experiment of printing the characters of the string with a c-style loop and a for-in loop.</p>
+<p><img src="images/problem2-5.png" width="677" height="894" alt=""/></p>
+<p>&nbsp;</p>
+<p>What just happened? Although javascript documentation leads you to believe strings are primitive types (can be checked for equality with == operator) they are infact objects. Installing the npm module colour added properties to the string's inheritance hierarchy. The result is that the for-in loop no longer functions as expected. The same problem exists for javascript arrays. </p>
+<p>The lesson from this experiment: <span class="red">You are NEVER SAFE in javascript using for-in loops to loop over the characters of strings or the elements of arrays.</span> This has caused lots for problems for students because it is very unexpected. For-in loops were created to help prevent out of bounds errors when looping over containers so this comes as a real disappointment.</p>
+<p>The problem is you can get away with using for-in loops with strings and arrays 98% of the time and then for 2% of the time your code will blow up. Again: NEVER use for-in loops over strings and arrays in javascript.</p>
+<p>I have posted on the course website a presentation entitled &quot;Danger Will Robinson: Javascript Pitfalls&quot;. It documents some javascript &quot;quirks&quot; that have given students lots of trouble in the past. The two examples from this problem is among them. If you find some of your own please let me know.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 3 -Using POST requests from the Android App</span></p>
+<p>Examine the documentation of the <a href="http://developer.android.com/reference/java/net/HttpURLConnection.html">HttpURLConnection</a> class. According to the documentation you  should be able to send POST, or PUT, requests instead of GET requests. For a POST message the data is passed in the body of the HTTP message, not the URL portion of the request.</p>
+<p>When sending a post message you should also invoke the <span class="code">setChunkedStreamingMode(0)</span> method described to allow data message to be send in chunks. The server is set up to handle data coming in chunks.</p>
+<p>Modify your MainActivity java code in the android app so that when the UP, DOWN, LEFT, or RIGHT button is pressed an HTTP POST request is sent to the server (instead of a GET request).</p>
+<p>&nbsp;</p>
+<p><img src="images/problem3-2.png" width="582" height="651" alt=""/></p>
+<p>&nbsp;</p>
+<p>When you have completed this you should be able to see your GET and POST requests show up in the proper colour on the server console output when adding and moving words around.</p>
+<p><img src="images/problem3-1.png" width="631" height="518" alt=""/></p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p></p>
+<p class="segment-header">&nbsp;</p>
+
+</body>
+</html>

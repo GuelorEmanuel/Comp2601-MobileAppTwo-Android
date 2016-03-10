@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}.red {
+	color: #F00;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 11 Google Maps API</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p>The purpose of this exercise is to explore the google maps API and introduce a couple of new components like: spinners and adapters. </p>
+<p class="red">To do this exercise you will need a signed API key. The instructions do getting one are describe in the preliminary section below.</p>
+<p>The excersise also makes use of some components: map fragment, adapter, spinner. Here we will just use them, but pay attention to how they are used so you can do similar things in future assignments.</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Running On An AVD Emulator</span></p>
+<p>Google maps is typically straight forward to run on a real device that has Google Play and Play Services installed, but if you planning to run on an AVD emulator there some additional steps you will need to set it up. At the end of this exercise is the description of what I did to get the completed app to work on an emulator.</p>
+<p>&nbsp;</p>
+<p>When completed the app will allow you to select cities with spinner and bring up a map of their location. You will also be able to place markers on the map.</p>
+<p><img src="images/AVD.png" width="350" height="617" alt=""/></p>
+<p>&nbsp;</p>
+<p><span class="segment-header"><span class="black-bold">Exercise Problems</span></span></p>
+<p>It's common for programmers to leave  <span class="code">//TODO</span> comments in their code. This exercise is described in terms of such <span class="code">//TODO</span> comments left in the demo code. You can reveal their locations in android studio by click the <span class="black-bold">TODO</span> button at the bottom:</p>
+<p><img src="images/todo list.png" width="905" height="431" alt=""/></p>
+<p class="segment-header">&nbsp;</p>
+<p class="segment-header"><span class="black-bold">TODO #0: Create your signed API key:</span></p>
+<p>For this exercise you will need to obtain a <span class="black-bold">signed</span> API key to use the google maps API. This is a two step process which involves first getting your  project's SHA1 debug key and then using it so sign an API key. The API key you use in your app must be the one signed by your app.</p>
+<p>The two steps are described here: <a href="https://developers.google.com/maps/documentation/android-api/signup#key">https://developers.google.com/maps/documentation/android-api/signup#key</a></p>
+<p>Here are screen captures of me doing the two steps on my mac.</p>
+<p><img src="images/debug-keystore.png" width="688" height="860" alt=""/></p>
+<p>&nbsp;</p>
+<p><img src="images/create api key.png" width="654" height="436" alt=""/></p>
+<p>&nbsp;</p>
+<p><img src="images/your api key.png" width="807" height="345" alt=""/></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">TODO #1: Create Some City Locations.</span></p>
+<p>In the <span class="code">createMapCoordinates()</span> in <span class="code">Common.java</span> add a few more cities like is done for Ottawa.</p>
+<pre>
+        LatLng ottawa = new LatLng(45.4214, -75.6919);
+        mCityCoord.put("Ottawa", ottawa);
+</pre>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">TODO #2: City Name Strings.</span></p>
+<p>In <span class="code">strings.xml</span> resource add city names from your <span class="code">createMapCoordinates</span> hashmap to the <span class="code">city_names</span> string array.</p>
+<p>&nbsp;</p>
+<p><span class="black-bold">TODO #3: CitySpinner, MapButton.</span></p>
+<p>In <span class="code">activity-main.xml</span> add  <span class="code">&lt;Spinner&gt;</span> and <span class="code">&lt;Button&gt;</span> resources. Label the button &quot;Launch Map&quot;. In <span class="code">MainActivity</span> provide instance variables <span class="code">Spinner mCitySpinner</span> and <span class="code">Button mMapButton</span> and inflate them with the appropriate <span class="code">findViewById()</span>.</p>
+<p>When completed you MainActivty UI might look like this:</p>
+<p>&nbsp;</p>
+<p><img src="images/main UI.png" width="466" height="258" alt=""/></p>
+<p class="red">&nbsp;</p>
+<p class="red">&nbsp;</p>
+<p><span class="black-bold">TODO #3: Listeners for Button, Spinner and an ArrayAdapter.</span></p>
+<p>Examine the following android documentation <br>
+  <br>
+<a href="http://developer.android.com/guide/topics/ui/controls/spinner.html">http://developer.android.com/guide/topics/ui/controls/spinner.html</a></p>
+<p>to see how to create a spinner had have it populated using an array adapter. Add button and spinner listeners (and create an ArrayAdapter) to be used by the spinner. The spinner should be used to select a city. The button listener should be used to launch the <span class="code">MapActivity</span> passing to it a city name (via intent bundle <span class="code">Common.LOCATION_BUNDLE</span> containing a <span class="code">Common.STATE_CITY_NAME</span>).</p>
+<p class="red">&nbsp;</p>
+<p><span class="black-bold">TODO #4: onMapReady Interface Method.</span></p>
+<p>Have <span class="code">MapActivity</span> implement the</p>
+<pre>com.google.android.gms.maps.OnMapReadyCallback</pre>
+<p> interface method   <span class="code">onMapReady(GoogleMap googleMap)</span> and have it make the map a hybrid type to show both satelite imagery and roads and also animate the camera to move to the chosen city. </p>
+<p>Specifically examine the <a href="https://developers.google.com/android/reference/com/google/android/gms/maps/package-summary">https://developers.google.com/android/reference/com/google/android/gms/maps/package-summary</a> summary and, in particular, the <span class="code">com.google.android.gms.maps.OnMapReadyCallback</span> interface and <span class="code">GoogleMap.animateCamera()</span> public method.</p>
+<p>Animating the camera would involve code structure like the following:</p>
+<pre>
+        CameraPosition cameraPosition; //create appropriate camera position
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+</pre>
+<p>&nbsp;</p>
+<p><span class="black-bold">TODO #5: onMapClick Interface Method.</span></p>
+<p>Have <span class="code">MapActivity</span> implement the <span class="code">GoogleMap.onMapClick</span> interface method  to move the map location towards the new location of a short tap or click. Specifically examine the <a href="https://developers.google.com/android/reference/com/google/android/gms/maps/package-summary">https://developers.google.com/android/reference/com/google/android/gms/maps/package-summary</a> summary and, in particular, the <span class="code">GoogleMap.onMapClick</span> interface and <span class="code">GoogleMap.animateCamera()</span> public method. </p>
+<p>When completed the map should move, or slide, to center the location you clicked on.</p>
+<p>&nbsp;</p>
+<p><span class="black-bold">TODO #6: onMapLongClick method to add Markers.</span></p>
+<p>Examine the <a href="https://developers.google.com/android/reference/com/google/android/gms/maps/package-summary">https://developers.google.com/android/reference/com/google/android/gms/maps/package-summary</a> summary and, in particular, the <span class="code">GoogleMap.onLongMapClick</span> interface and <span class="code">GoogleMap.addMarker()</span> public method. </p>
+<p>Have the <span class="code">MapActivity</span> implement <span class="code">onLongMapClick</span> interface method to add a marker to the map when the user does a long click. Set the <span class="code">MapActivity</span> instance to be the <span class="code">mMap</span>'s long click listener with <span class="code">mMap.setOnMapClickListener(...)</span>;</p>
+<p>Also save the markers to the <span class="code">mMarkers</span> hashmap maintained by the <span class="code">MainActivity</span>. That way they will be there if you return to that map.</p>
+<p>When completed you should both see the markers on the current map, and also if you return to that map.</p>
+<p><img src="images/location markers.png" width="333" height="316" alt=""/></p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Running On An AVD Emulator</span></p>
+<p>Here are the steps I did to get the app to run on my emulator. If you find another approach please let us know.</p>
+<p>Step 1) In SDK manager ensure that Google API's are installed in the android images you plan to use. (I did not try images earlier than API 22.)</p>
+<p><img src="images/install google API.png" width="775" height="878" alt=""/></p>
+<p>&nbsp;</p>
+<p>Step 2) Create a new AVD with an image that includes Google API's</p>
+<p><img src="images/create virtual device.png" width="1234" height="646" alt=""/></p>
+<p>&nbsp;</p>
+<p>That was sufficient for me to run the completed app on an AVD:</p>
+<p><img src="images/AVD.png" width="350" height="617" alt=""/></p>
+<p class="segment-header">&nbsp;</p>
+
+</body>
+</html>

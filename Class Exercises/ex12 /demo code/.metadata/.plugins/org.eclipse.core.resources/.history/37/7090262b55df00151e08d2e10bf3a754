@@ -1,0 +1,9 @@
+package exercise5;
+
+public class Player {
+
+	
+	public void play(Tictac tac, int pos) {
+		System.out.println("I was called");
+	}
+}

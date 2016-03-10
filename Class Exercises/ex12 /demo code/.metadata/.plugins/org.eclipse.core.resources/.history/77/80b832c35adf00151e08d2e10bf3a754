@@ -1,0 +1,31 @@
+package exercise5;
+
+public class Decoder {
+	
+	private int [] encodedData;
+	private int[] barkerCode;
+	
+	Decoder(int[] eData, int[] bCode) {
+		encodedData = eData;
+		bCode       = bCode;
+	}
+	
+	public int[] decodeData() {
+		int []data = new int[20];
+		
+		for (int i = 0; i < encodedData.length; i++) {
+			
+			if ( ((i+1) %4) == 0){
+				System.out.println(encodedData[i]);
+			}else {
+				System.out.print(encodedData[i]);
+
+			}
+		}
+		
+		return encodedData;
+	}
+	
+	
+
+}

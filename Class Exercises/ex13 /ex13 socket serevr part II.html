@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}
+.red {
+	color: #F00;
+}
+.green {
+	color: #090;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 13 Client-Server with Sockets -Part II</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p class="red">For this exercise you will need a java programming IDE, like Eclipse, installed on you computer.</p>
+<p>The purpose of this exercise is to break away from the simple request-response operation of the server we used last week and allow the server to send unsolicited messages to clients. Clients, in turn, need be able to send and receive messages independently. That is, be able to receive unsolicited messages from the server. </p>
+<p>&nbsp;</p>
+
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Preliminary:</span></p>
+<p>The demo code provided consists of the working request-response server from last week and an android client. Start up the code and verify that you can chat with the server from the android application. Connect to the server using an AVD android virtual device accessing the server at the local host address </p>
+<pre>10.0.2.2:3010
+</pre>
+<p>We are interested in modifying the server to allow multiple clients to connect at the same time -the current server only allows one client. Examine the code and find the spot where the <span class="code">accept() </span>method is invoked on a <span class="code">ServerSocket</span> instance. You should notice that the code goes off and supports the client-server connection but no further calls to <span class="code">accept()</span> are made until the current client disconnects. In this exercise we are going to allow both multiple clients and allow the server to send a message to all of the connected clients. That is, enable the server to send messages that are not in direct response to a client request.</p>
+<p><span class="segment-header"><span class="black-bold">Testing with Multiple Client Apps.</span></span></p>
+<p>Using multiple android AVD's on the same machine is both very slow and very &quot;hit and miss&quot;. In my own testing it sometimes works and sometimes not. To assist with this we have built a simple  java client to help with the testing. The intention is that you might launch one AVD and several of the simple java clients. </p>
+<p>The java client is packaged with the server eclipse project in a separate package. The client is launched by running the <span class="code">ClientGUI.java</span> file from eclipse. It should launch a client that looks like the one below. It provides menu items to connect and disconnect and clear the conversation area. Once connected you can type a message in the text field and press <span class="black-bold">Submit</span> to send it to the server. Client and Server conversation is shown in the text area. </p>
+<p><img src="images/java client.png" width="353" height="323" alt=""/></p>
+<p>Launch a couple of the java clients (without the AVD connected to the server) and verify that only one can connect to the server at a time.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1 -Allowing Multiple Clients to Attach.</span></p>
+<p>Examine the server code in <span class="code">Server.java</span> and <span class="code">Common.java</span>. Observe that after the blocking <span class="code">accept()</span> call on the serverSocket the code goes into an infinite loop handling the conversation with the client until the client disconnects. This does not allow other clients to attach.</p>
+<pre>
+            Socket client = serverSocket.accept();
+
+            try {
+               mOut = new PrintWriter(...);
+               BufferedReader in = new BufferedReader(...);
+
+               while (running) {
+                   String message = in.readLine();
+
+                   if (message != null && messageListener != null) {
+                        //call the method messageReceived from ServerBoard class
+                    	if (!message.equalsIgnoreCase("Disconnect")){
+                    		messageListener.messageReceived(message);
+                    		sendMessage(Common.mReplies.get(mRandom.nextInt(5)));
+                    	} else {
+                    		System.out.println("Disconnecting");
+                    		running = false;
+                    	}
+                    }
+                }
+
+            } catch (Exception e) {
+                //...
+            }</pre>
+<p>Modify the code so that each connection with a client is handled on its own thread.</p>
+<p>We suggest you create a class called <span class="code">Connection</span> that <span class="code">extends</span> <span class="code">Thread</span> and move the code for reading and writing messages on the connection to that class. </p>
+<p>The <span class="code">Server</span> class can then have its own infinite loop that simply keeps returning to the <span class="code">accept()</span> method to accept another client. That code might look something like the following:</p>
+<pre>
+   ServerSocket serverSocket = new ServerSocket(SERVERPORT);<br>   while(running){<br>      Socket client = serverSocket.accept();              <br>      Connection clientConnection = new Connection(client, ...);<br>      clientConnection.start();<br>   } 
+</pre>
+<p>Note in this case there is no need for the <span class="code">Server</span> class itself to <span class="code">extend</span> <span class="code">Thread</span> anymore.</p>
+<p>Once you have completed this modification several clients should be able to have a conversation with the server at the same time. Try it with an android AVD and serveral of the simple java clients.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2 - Broadcasting Server Messages To All Clients.</span></p>
+<p>Imagine now that we want server responses to be broadcast to all the clients. That is, when a client makes a request of the server the server's response in not just sent to the requesting client but to all the connected clients.</p>
+<p>To do this the server can maintain a container (e.g. <span class="code">ArrayList&lt;Connection&gt; connections</span>) and each time a client connects the new connection is added to the container like this:</p>
+<p>&nbsp;</p>
+<pre>
+ public static void addConnection(Connection aConnection){<br> 	   connections.add(aConnection);<br> }
+ //...
+
+   ServerSocket serverSocket = new ServerSocket(SERVERPORT);<br>   while(running){<br>      Socket client = serverSocket.accept();              <br>      Connection clientConnection = new Connection(client, ...);
+      connections.add(clientConnection);<br>      clientConnection.start();<br>   } 
+
+<span class="green">    </span>
+</pre>
+<p>Whenever the <span class="code">clientConnection</span>, running on its own thread, sends a response it should loop through the <span class="code">connections</span> collection and send the message to all of the connected clients.</p>
+<p>The simple java clients are already set up to receive server messages independently of the requests they send so you should be able to use them &quot;as is&quot; to test your new broadcasting server.</p>
+<p>Once you have completed this modification you should see that whenever a client makes a request the server response appears on all the connected clients.</p>
+<p>You may have to <span class="code">synchronize</span> the odd method in your code depending on how you organize it. Try without synchronization first and see if problems arrise.</p>
+<p><br>
+</p>
+<p class="segment-header"><span class="black-bold">Problem 3 - Modifying the Android Client.</span></p>
+<p>Examine the android client provided and see what modifications are necessary for it to receive server messages independently of requests. Make any modification necessary and demonstrate that your android AVD, along with some java clients, can interact with the broadcasting server.</p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p></p>
+<p class="segment-header">&nbsp;</p>
+
+</body>
+</html>

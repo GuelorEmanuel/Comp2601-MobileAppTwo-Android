@@ -1,0 +1,96 @@
+package com.comp2601.server;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Random;
+
+
+/**
+ * The class extends the Thread class so we can receive and send messages at the same time
+ */
+public class Server extends Thread {
+
+	//TODO:  Set port
+    private static final int SERVERPORT = 3010; //FOR NOW
+    private boolean running = false;
+    private PrintWriter mOut;
+    private OnMessageReceived messageListener;
+    private Random mRandom;
+
+
+    //Declare the interface. 
+    //The method messageReceived(String message)  must be implemented 
+    //in the Server class. 
+    public interface OnMessageReceived {
+        public void messageReceived(String message);
+    }
+
+    public static void main(String[] args) {
+
+    //Create server and start it. Provide the callback to print
+    	//messages received
+    	new Server(new Server.OnMessageReceived() {
+            @Override
+            //this method declared in the interface from Server class is 
+            //implemented here
+            //this method is actually a callback method, because it will 
+            //run every time when it will be called from
+            //Server class (at while)
+            public void messageReceived(String message) {
+                System.out.println("\n" + message);
+            }
+        }).start();
+
+
+
+    }
+
+    /**
+     * Constructor of the class
+     * @param messageListener listens for the messages
+     */
+    public Server(OnMessageReceived messageListener) {
+        this.messageListener = messageListener;
+    }
+
+    /**
+     * Method to send the messages from server to client
+     * @param message the message sent by the server
+     */
+    public void sendMessage(String message){
+        if (mOut != null && !mOut.checkError()) {
+            mOut.println(message);
+            mOut.flush();
+        }
+    }
+
+    @Override
+    public void run() {
+        super.run();
+
+        running = true;
+
+        try {
+            System.out.println("S: Connecting...");
+
+            ServerSocket serverSocket = new ServerSocket(SERVERPORT);
+            while(running){
+               Socket client = serverSocket.accept();              
+               Connection clientConnection = new Connection();
+               clientConnection.start();
+            } 
+
+            System.out.println("S: Receiving...");
+
+        } catch (Exception e) {
+            System.out.println("S: Error");
+            e.printStackTrace();
+        }
+
+    }
+}

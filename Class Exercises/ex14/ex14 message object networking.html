@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}
+.red {
+	color: #F00;
+}
+.green {
+	color: #090;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 14 Networking with Message Objects</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p class="red">For this exercise you will need Eclipse, installed on you computer.</p>
+<p>The purpose of this exercise is to break away from the client and server sending each other simple strings and instead exchange message objects. This is much more realisitic and reflects how most client server exchanges are done including the HTTP protocol.</p>
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Preliminary:</span></p>
+<p>The demo code provided consists of the working request-response server from the previous exercise that supports multiple clients but does not broadcast to all clients. (It's bascically the answer code from problem #2 in the last exercise supporting multiple clients having one-on-one chats with the server.) Connect to the server using  the android client provided using an AVD android virtual device accessing the server at the local host address: </p>
+<pre>10.0.2.2:3010
+</pre>
+<p class="red">(Note the simple java client provided will NOT work until the required changes are made to the server. If you run against the demo server it will hang -an interesting debugging exercise to figure out where exactly it hangs and why.)</p>
+<p>We want to modify the client - server exchange to use message objects rather than simple strings. Examine the server code provided in eclipse and notice a package is included that defines a <span class="code">Message</span> object along with helper classes: <span class="code">Header</span> and <span class="code">Body</span>. A message consists of a header and a body. The header contains information such as the type of message, who the sender is, and who the receiver is. The body is intended to be the data, or payload, of the message. Examine the code provided. The message class defines some constants and you can add to these whatever you find necessary.</p>
+<p>We want the client and server to exchange instances of these message objects. To send a message an object will be serialized and inserted into an <span class="code">ObjectOutputStream</span>. To read an object it will be read from an <span class="code">ObjectInputStream</span>. That is, we will use java's default serialization of objects which requires that they extend the <span class="code">Serializable</span> interface.</p>
+<p class="segment-header"><span class="black-bold">Problem 1 -Creating Message Objects.</span></p>
+<p>Find all the places in the server that sends a message to clients. Create a message object intended to represent the message, instead of the simple strings currently sent. Find the places in the server that receive message strings and modify them to expect message objects instead.</p>
+<p>Since message objects extend <span class="code">Serializable</span> and are build only of components that also implement <span class="code">Serializable</span> they can be inserted into an <span class="code">ObjectInputStream</span> instance using the stream's <span class="code">writeObject()</span> method. Similarly they can be read from an <span class="code">ObjectInputStream</span> using the <span class="code">readObject()</span> method.</p>
+<p>Replace the <span class="code">BufferedReader</span> and <span class="code">PrintWriter</span> streams in the server with <span class="code">ObjectInputStream</span> and <span class="code">ObjectOutputStream</span> instead. Then modify the code as needed so that message objects are sent and received between client and server. Thus message objects are serialized, sent, received and deserialized.</p>
+<p>The simple java client provided with the eclipse project is already set up to use these message objects so look at that code to see how these streams are used.</p>
+<p>When you have completed these server modifications you can test it with the simple java client provided.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2 - Android Client using Message Objects.</span></p>
+<p>For this problem modify the provided android client to now send and receive Message objects instead of simple strings. Basically this involves changing its streams to <span class="code">ObjectInputStream</span> and <span class="code">ObjectOutputStreams</span> and adding the <span class="code">Message</span>, <span class="code">Header</span> and Body classes.</p>
+<p>Note, to serialize and inflate the <span class="code">Message</span> objects the classes have to match in both the server and client which includes the packages they are located in. So put your <span class="code">Message</span>, <span class="code">Header</span> and <span class="code">Body</span> classes in the same <span class="code">com.comp2601.message</span> package as it is in the server. Othewise you will get &quot;class not found&quot; exception when you try an de-serialize. Below is an image of how the files should be organized. </p>
+<p><img src="images/package.png" width="360" height="285" alt=""/></p>
+<p>&nbsp;</p>
+<p>When you have completed this you should be able to chat with the server using your android AVD and have them exchanging messages objects.</p>
+<p>&nbsp;</p>
+<p><img src="images/message app.png" width="454" height="422" alt=""/></p>
+<p>&nbsp;</p>
+<pre>&nbsp;
+ </pre>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p>&nbsp;</p>
+<p></p>
+<p class="segment-header">&nbsp;</p>
+
+</body>
+</html>

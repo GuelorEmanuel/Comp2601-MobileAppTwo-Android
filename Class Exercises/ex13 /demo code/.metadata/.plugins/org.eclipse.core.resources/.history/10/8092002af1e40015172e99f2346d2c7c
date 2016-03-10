@@ -1,0 +1,70 @@
+package com.comp2601.server;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Random;
+
+
+/**
+ * The class extends the Thread class so we can receive and send messages at the same time
+ */
+public class Server extends Thread {
+
+	//TODO:  Set port
+    private static final int SERVERPORT = 3010; //FOR NOW
+    private boolean running = false;
+    private PrintWriter mOut;
+    //private OnMessageReceived messageListener;
+    private Random mRandom;
+    ArrayList<Connection> connection;
+
+
+  
+
+    public static void main(String[] args) {
+    	
+    	System.out.println("S: Connecting...");
+    	
+    	//TODO: Create serversocket
+    	//create a server socket. A server socket waits for requests to come in over the network.
+    	ServerSocket serverSocket = new ServerSocket(SERVERPORT);
+    	running = true;
+    	
+    	//TODO: Create a loop to read a line from the input 
+    	//and the send a reply back to client using the sendMessage method
+    	while (running) {
+    		
+    		if (message != null && messageListener != null) {
+                        //call the method messageReceived from ServerBoard class
+                    	if (!message.equalsIgnoreCase("Disconnect")){
+                    		messageListener.messageReceived(message);
+                    		sendMessage(Common.mReplies.get(mRandom.nextInt(5)));
+                    	} else {
+                    		System.out.println("Disconnecting");
+                    		running = false;
+                    	}
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println("S: Error");
+                e.printStackTrace();
+            } finally {
+            	sendMessage("Disconnected");
+                client.close();
+                System.out.println("S: Done.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("S: Error");
+            e.printStackTrace();
+        }
+
+    }
+}

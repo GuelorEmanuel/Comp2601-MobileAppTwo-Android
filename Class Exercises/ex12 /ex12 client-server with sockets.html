@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>COMP2601</title>
+<style>
+body {
+	font-family: arial;
+	margin-left: 80px;
+}
+p {
+	font-size:24px;
+}
+pre {
+	font-size:20px;
+}
+hr {
+	width: 100%;
+	height: 2px;
+	
+	margin-top:10px;
+	margin-bottom:10px
+}
+.header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 40px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	color: rgb(153, 0, 0);
+}
+.subheader {
+	color: #000099;
+	
+	margin-bottom:100px;
+}
+.segment-header {
+	color: rgb(0, 0, 153);
+	font-size: 30px;
+}
+.black-bold {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+.glossary-term {
+	font-weight: 700;
+	color: #000099;
+}
+.code {
+	font-family: 'Courier New';
+}
+.comment {
+	color:rgb(0, 128, 0);
+}
+ul li {
+	margin-bottom: 5px;
+	font-size:24px;
+}
+.red {
+	color: #F00;
+}
+.green {
+	color: #090;
+}
+</style>
+</head>
+<body>
+<p class="header">COMP 2601 Winter 2016</p>
+<p class="header subheader">Ex 12 Client-Server with Sockets</p>
+<p>&copy; L.D. Nel 2016</p>
+<hr />
+<p class="red">Revisions -none yet</p>
+<hr />
+<p class="segment-header">Description:</p>
+<p class="red">For this exercise you will need a java programming IDE, like Eclipse, installed on you computer.</p>
+<p>The purpose of this exercise is to familiarize you with using sockets to establish connections between a client (android app) and a server (implemented in java). </p>
+<p>In the previous node.js based server exercises there was no lasting connection  between the client and the server. After the server responded to the client's request the connection was lost.</p>
+<p>Sockets allow you to established a connection between an client and server, much like a telephone call, that allow messages to flow between them until the connection is closed by either end. While the connection is active the client and server can either communicate in a request-response manner or it can be programmed so that client and server can send each other unsolicited (asynchronous) messages. In this exercise we will use only request-response messaging while the connection is active. That is, the client will send requests and the server will respond to each one. The server will not send unsolicited messages to the client.</p>
+<p>The server will be built in java. The demo code provides the server skeleton code as an eclipse project. The client will be an android app. You can test the client server on localhost by having your android app access the server on the special IP address 10.0.2.2. </p>
+
+<p class="red">You need to demonstrate your exercise to the TA or Prof. before you leave the class to get credit for it. Marks: 2 or completion, 1 for partial progress, 0 for no show or no progress. (A mark of 1 can be upgraded to 2 is show us your completed work within one week of this exercise.)</p>
+<hr/>
+<p class="segment-header">Instructions:<br />
+</p>
+<p class="segment-header"><span class="black-bold">Preliminary:</span></p>
+<p>It is common for programmers to leave themselves <span class="code">//TODO</span> comments in their code. The demo code for this exercise has such <span class="code">//TODO</span> comments to indicate where you need to make modifications. You can reveal their locations in android studio and eclipse as follows.</p>
+<p>In android studio:</p>
+<p><img src="images/todo.png" width="704" height="314" alt=""/></p>
+<p>&nbsp;</p>
+<p>In eclipse:</p>
+<p><img src="images/todo2.png"  alt=""/></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 1 -A Java Socket-based Server.</span></p>
+<p>Open the demo code <span class="code">ChatServer</span> in eclipse.</p>
+<p>Reveal the <span class="code">//TODO</span> list.</p>
+<p>Here is the skeleton code for the server showing all the <span class="code">//TODO</span> you need to complete.</p>
+<pre>
+
+<span class="green">/**
+ * The class extends the Thread class so we can 
+ * receive and send messages at the same time
+ */</span>
+public class Server extends Thread {
+
+	<span class="red">//TODO:</span><span class="green">  Set port</span>
+    private static final int SERVERPORT = 0; <span class="green">//FOR NOW</span>
+    private boolean running = false;
+    private PrintWriter mOut;
+    private OnMessageReceived messageListener;
+    private Random mRandom;
+
+
+    <span class="green">//Declare the interface. 
+    //The method messageReceived(String message)  must be implemented 
+    //in the Server class. </span>
+    public interface OnMessageReceived {
+        public void messageReceived(String message);
+    }
+
+    public static void main(String[] args) {
+
+    <span class="green">//Create server and start it. Provide the callback to print
+    //messages received</span>
+    	new Server(new Server.OnMessageReceived() {
+            @Override
+<span class="green">            //this method declared in the interface from Server class is 
+            //implemented here
+            //this method is actually a callback method, because it will 
+            //run every time when it will be called from
+            //Server class (at while)
+</span>            public void messageReceived(String message) {
+                System.out.println("\n" + message);
+            }
+        }).start();
+
+
+
+    }
+
+<span class="green">    /**
+     * Constructor of the class
+     * @param messageListener listens for the messages
+     */</span>
+    public Server(OnMessageReceived messageListener) {
+        this.messageListener = messageListener;
+    }
+
+<span class="green">    /**
+     * Method to send the messages from server to client
+     * @param message the message sent by the server
+     */
+</span>    public void sendMessage(String message){
+        if (mOut != null && !mOut.checkError()) {
+            mOut.println(message);
+            mOut.flush();
+        }
+    }
+
+    @Override
+    public void run() {
+        super.run();
+
+        running = true;
+
+        try {
+            System.out.println("S: Connecting...");
+
+<span class="green">            </span><span class="red">//TODO:</span><span class="green"> Create serversocket
+            //create a server socket. 
+            //A server socket waits for requests to 
+            //come in over the network.</span>
+            ServerSocket serverSocket; <span class="green">//for now</span>
+
+<span class="green">            </span><span class="red">//TODO:</span><span class="green"> serversocket accept
+            //create client socket... the method 
+            //accept() listens for a connection to be 
+            //made to this socket and accepts it.</span>
+            Socket client; <span class="green">//for now</span>
+            System.out.println("S: Receiving...");
+
+            try {
+
+            	mRandom = new Random();
+            	
+<span class="green">            	</span><span class="red">//TODO:</span><span class="green"> create OutpStreamWriter and an 
+                //InputStream reader.  
+            	//Order of creation matters
+                //sends the message to the client</span>
+                mOut = null; <span class="green">//for now</span>
+
+<span class="green">                //read the message received from client
+                //using a BufferedReader</span>
+                BufferedReader in; <span class="green">//for now</span>
+
+<span class="green">                //In this while we wait to receive messages from client 
+                //(it's an infinite loop)
+                //listening for messages
+                
+                </span><span class="red">//TODO:</span><span class="green"> Create a loop to read a line from the input 
+                //and the send a reply back to client using the 
+                //sendMessage method</span>
+                while (running) {
+                    String message = in.readLine();
+
+                 }
+
+            } catch (Exception e) {
+                System.out.println("S: Error");
+                e.printStackTrace();
+            } finally {
+            	sendMessage("Disconnected");
+                client.close();
+                System.out.println("S: Done.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("S: Error");
+            e.printStackTrace();
+        }
+
+    }
+}
+
+</pre>
+<p>When completed you should be able to launch the server. There will be a <span class="code">S: Connecting...</span> message printed on the eclipse console.</p>
+<p>&nbsp;</p>
+<p class="segment-header"><span class="black-bold">Problem 2 - Android Socket-based Client.</span></p>
+<p>Open the <span class="code">ClassChatApp</span> android project in android studio, and reveal the <span class="code">//TODO</span> list.</p>
+<p>Here is the structure of the code showing most of the <span class="code">//TODO</span> items. There are a few more simple ones elsewhere in the code.</p>
+<pre>
+public class ClientConnection {
+
+    private String serverMessage;
+    private final String TAG ="ClientConnection";
+
+    private OnMessageReceived mMessageListener = null;
+    private boolean mRun = false;
+
+    PrintWriter mOut;
+    BufferedReader mIn;
+
+<span class="green">    //Declare the interface. The method messageReceived(String message)
+    //must be implemented in the MyActivity
+    //class at on asynckTask doInBackground</span>
+    public interface OnMessageReceived {
+        public void messageReceived(String message);
+    }
+
+<span class="green">    /**
+     *  Constructor of the class.
+     *  OnMessagedReceived listens for the messages 
+     *  received from server
+     */</span>
+    public ClientConnection(OnMessageReceived listener) {
+        mMessageListener = listener;
+    }
+
+<span class="green">    /**
+     * Sends the message entered by client to the server
+     * @param message text entered by client
+     */</span>
+    public void sendMessage(String message){
+
+<span class="green">        </span><span class="red">//TODO</span><span class="green"> output message back to client</span>
+        Log.e(TAG, "Message being sent: " + message);
+
+    }
+
+    public void stopClient(){
+        sendMessage("Disconnect");
+        mRun = false;
+    }
+
+    public void run() throws ConnectException {
+
+            mRun = true;
+
+            try {
+
+                <span class="green">//here you must put your computer's IP address.</span>
+                InetAddress serverAddr = InetAddress.getByName(Common.mIPAddress);
+
+                Log.e(TAG, "C: Connecting...");
+
+<span class="green">                </span><span class="red">//TODO:</span><span class="green"> Create socket
+                //create a socket to make the connection with the server</span>
+                Socket socket; <span class="green">//for now</span>
+
+
+                try {
+
+<span class="green">                    </span><span class="red">//TODO:</span><span class="green"> add PrintWriter and BufferedReader
+                    //send the message to the server</span>
+                    mOut = null; <span class="green">//for now</span>
+
+                    Log.e(TAG, "C: Sent.");
+                    Log.e(TAG, "C: Done.");
+
+<span class="green">                    //receive the message which the server sends back</span>
+                    mIn = null; <span class="green">//for now</span>
+
+<span class="green">                    //in this while the client listens for the
+                    // messages sent by the server</span>
+
+<span class="green">                    </span><span class="red">//TODO:</span><span class="green"> read a line of from input stream and read
+                    // response from server and display it using
+                    // the messageRecieved method</span>
+                    while (mRun) {
+                        serverMessage = mIn.readLine();
+
+                    }
+
+                    Log.e(TAG, "S: Received Message: '" + serverMessage + "'");
+
+                } catch (Exception e) {
+
+                   Log.e(TAG, "S: Error", e);
+
+                } finally {
+<span class="green">                    //the socket must be closed. It is not possible
+                    // to reconnect to this socket after it is closed,
+                    // which means a new socket instance has to be created.</span>
+                    socket.close();
+                }
+
+            } catch (ConnectException e) {
+
+                Log.e(TAG, "C: Error", e);
+                throw e;
+
+            } catch (IOException e){
+                e.printStackTrace();
+                Log.e(TAG, "IOException");
+            }
+
+            Log.e(TAG, "Thread Done");
+        }
+}
+</pre>
+<p>When you have completed this client you should be able to launch it and see the interface below. You should now be able to connect to the server and &quot;chat&quot; with it. The server will respond to your messages in a meaningful way using sophisticated AI.</p>
+<p><br>
+</p>
+<p class="code"><img src="images/android1.png"  alt=""/></p>
+<p>&nbsp;</p>
+<p><span class="red">When you have completed these problems demonstrate your code to  the TA or Prof. to get credit for the tutorial.</span> </p>
+<p></p>
+<p class="segment-header">&nbsp;</p>
+
+</body>
+</html>

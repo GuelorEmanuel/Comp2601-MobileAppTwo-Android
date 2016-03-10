@@ -1,0 +1,15 @@
+package exercise5;
+
+public class Decoder {
+	
+	private int [] encodedData;
+	private int[] barkerCode;
+	
+	Decoder(int[] rError, int[] bCode) {
+		randomError = rError;
+		bCode       = bCode;
+	}
+	
+	
+
+}

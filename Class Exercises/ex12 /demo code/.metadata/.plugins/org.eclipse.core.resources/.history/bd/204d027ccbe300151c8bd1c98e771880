@@ -1,0 +1,53 @@
+package com.comp2601.server;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Random;
+
+
+/**
+ * The class extends the Thread class so we can receive and send messages at the same time
+ */
+public class Server {
+
+	//TODO:  Set port
+    private static final int SERVERPORT = 3010; //FOR NOW
+    private boolean running = true;
+    
+
+
+    //Declare the interface. 
+    //The method messageReceived(String message)  must be implemented 
+    //in the Server class. 
+    public interface OnMessageReceived {
+        public void messageReceived(String message);
+    }
+
+    public static void main(String[] args) {
+    	
+    	ServerSocket serverSocket = new ServerSocket(SERVERPORT);
+    	   while(running){
+    	      Socket client = serverSocket.accept();              
+    	      //Connection clientConnection = new Connection(client, ...);
+    	      clientConnection.start();
+    	   } 
+
+
+
+    }
+
+    /**
+     * Constructor of the class
+     * @param messageListener listens for the messages
+     */
+    public Server(OnMessageReceived messageListener) {
+        this.messageListener = messageListener;
+    }
+
+   
+}

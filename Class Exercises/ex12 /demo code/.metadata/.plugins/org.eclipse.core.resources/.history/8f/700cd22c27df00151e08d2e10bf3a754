@@ -1,0 +1,23 @@
+package exercise5;
+
+public class DSSSSimulation {
+	
+	public static void main(String [] args) {
+		Encoder encoder = new Encoder(3, 4);
+		Channel channel = new Channel(encoder.getEncoder(),1);
+		
+		int[] data = {0, 0,1, 0};
+		int[] code  = { 1, 1, 0};
+		
+		encoder.displayDefaultEncoder();
+		System.out.println("-------");
+		channel.displayErrorsSequence();
+		System.out.println("-------");
+
+		
+	
+		
+				
+	}
+
+}

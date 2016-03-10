@@ -1,0 +1,48 @@
+package exercise5;
+
+public class DSSSSimulation {
+	
+	public static void main(String [] args) {
+		
+		int[] data = {0, 0,1, 0};
+		int[] code  = { 1, 1, 0};
+		
+		Encoder encoder = new Encoder(3, 4); // default data and default Barker code
+		encoder.setData(data); // let set our data
+		encoder.setBarkerCode(code); //let set our BarkerCode
+		
+		System.out.println("---ENCODER  ----");
+		encoder.printSequence(encoder.getData());
+		System.out.println("----BarkerCODE---");
+		encoder.printSequence(encoder.getBarkerCode());
+		
+		System.out.println("----Replicate The Data Line---");
+		encoder.printMatrix(encoder.repline(encoder.getData(),encoder.getBarkerCode().length));
+		
+
+		
+		
+		Channel channel = new Channel(encoder.getEncoder(),0.1000);
+		
+		Decoder decoder = new Decoder( encoder.getEncoder(),code);
+		decoder.decodeData();
+		
+		decoder.printMidDecodedData();
+		
+		System.out.println("-------");
+		encoder.printSequence(encoder.getEncoder());
+		System.out.println("-------");
+
+		
+		encoder.displayDefaultEncoder();
+		System.out.println("-------");
+		channel.displayErrorsSequence();
+		System.out.println("-------");
+
+		
+	
+		
+				
+	}
+
+}

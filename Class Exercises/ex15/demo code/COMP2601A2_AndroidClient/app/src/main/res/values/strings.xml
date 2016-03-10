@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tic Tac Toe :USERS</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_run">Stop</string>
+    <string name="button_start">Start</string>
+    <string name="game_end">Game ended</string>
+    <string name="you_won">You won the game.</string>
+    <string name="other_won"> won the game.</string>
+    <string name="quit_game"> ended the game.</string>
+    <string name="a_draw">The game was a draw.</string>
+    <string name="title_activity_game">Tic Tac Toe</string>
+    <string name="i_quit">I ended the game.</string>
+    <string name="player_X_start_game"> has started a game.</string>
+
+</resources>

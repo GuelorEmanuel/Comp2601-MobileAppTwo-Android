@@ -1,0 +1,11 @@
+package exercise5;
+
+public class Channel {
+	private int encodedData;
+	private double bER;
+	public Channel(int[] encodedData, double bER ) {
+		this.encodedData = encodedData;
+		this.bER         = bER;
+	}
+
+}

@@ -155,11 +155,14 @@ function handleMouseUp(e){
 
 function handleTimer(){
   //Handle intersection
-    var rect1, rect2;
+  var rect1, rect2;
+
+  var context = canvas.getContext('2d');
   for(var i=0; i<words.length; i++) {
+    var rectWordWidth = context.measureText(words[i].word).width;
       rect1 = {x: movingString.x ,y:movingString.y,width:movingString.stringWidth, height:movingString.stringHeight};
     if (  words[i].word === "Louis" || words[i].word === "Sean" ) {
-          rect2 = {x: words[i].x, y:words[i].y,width:wordTargetRect.width, height:wordTargetRect.height};
+          rect2 = {x: words[i].x, y:words[i].y,width:rectWordWidth, height:wordTargetRect.height};
     }
     intersectRect(rect1, rect2);
     //keep moving word within bounds of canvas

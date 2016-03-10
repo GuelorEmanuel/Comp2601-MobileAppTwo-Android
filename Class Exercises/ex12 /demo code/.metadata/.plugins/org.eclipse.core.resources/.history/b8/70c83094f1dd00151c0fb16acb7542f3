@@ -1,0 +1,87 @@
+package exercise5;
+
+public class DSSS {
+	
+	
+	public int [] encoder(int[] data, int[] code ) {
+		
+		return data;
+	}
+	
+	public int[] random(int length) {
+		int[] data = new int[length];
+		for (int i = 0;  i < length; i++) {
+            int randomBit = (int)(2 * Math.random());  // add either 0 or 1
+            data[i] = randomBit;
+        }
+		return data;
+	}
+	
+	public int[][] generateMatrix(int[] data, int numOfReplicate) {
+		int[][] replineData = new int[numOfReplicate][data.length];
+		
+		for (int i = 0; i < replineData.length; i++)
+			for (int j = 0; j < replineData[0].length; j ++) {
+				replineData[i][j] = data[j];
+			}
+		return replineData;
+			
+	}
+	
+	public int[][] repline(int[] data, int lengthCode) {
+		return generateMatrix(data, lengthCode);
+	}
+	
+	public int[][] repColumn(int[] code, int lengthData){
+		int[][] original =  generateMatrix(code, lengthData);
+		
+        return transposeMaxtrix(original);
+	}
+	
+	public int[][] xor(int d[][], int c[][]) {
+		int[][] transposeData = new int[d.length][d[0].length];
+		for (int i = 0; i < d.length; i++) {
+    		for (int j = 0; j < d[0].length; j++) {
+    			transposeData[i][j] = d[i][j] ^ c[i][j];
+    		}
+    	}
+
+		return transposeData;
+	}
+	
+	public int[][] transposeMaxtrix(int[][] matrix) {
+		int[][] transposeData = new int[matrix[0].length][matrix.length];
+		if (matrix.length > 0) {
+        	for (int i = 0; i < matrix[0].length; i++) {
+        		for (int j = 0; j < matrix.length; j++) {
+                    transposeData[i][j] = matrix[j][i];
+                }
+            }
+        }
+        return transposeData;
+	}
+	
+	public void printMatrix(int[][] data) {
+		for (int i = 0; i < data.length; i++){
+			for (int j = 0; j < data[0].length; j ++) {
+				System.out.print(data[i][j]);
+			}
+		   System.out.println();
+		}
+	}
+	
+	public int[] display(int[][] data) {
+		int size = data.length*data[0].length;
+		int [] nicedata = new int[size];
+		
+		for (int i = 0 ; i < transposeMaxtrix(data).length ; i++) {
+		    for (int j = 0 ; j < transposeMaxtrix(data)[0].length; j++) {
+		    	nicedata[i] = transposeMaxtrix(data)[i][j]; 
+		        System.out.print(nicedata[i]);
+		    }
+		}
+		return nicedata;
+	}
+	
+
+}

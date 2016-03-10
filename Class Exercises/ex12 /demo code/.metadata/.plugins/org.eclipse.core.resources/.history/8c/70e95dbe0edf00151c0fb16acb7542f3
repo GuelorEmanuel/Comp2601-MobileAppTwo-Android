@@ -1,0 +1,87 @@
+package com.comp2601.server;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Random;
+
+public class Connection extends Thread {
+	
+	Connection(){
+		
+	}
+	
+    @Override
+    public void run() {
+        super.run();
+
+        running = true;
+
+        try {
+            System.out.println("S: Connecting...");
+
+            //TODO: Create serversocket
+            //create a server socket. A server socket waits for requests to come in over the network.
+            ServerSocket serverSocket = new ServerSocket(SERVERPORT);
+
+            //TODO: serversocket accept
+            //create client socket... the method accept() listens for a connection to be 
+            //made to this socket and accepts it.
+            Socket client = serverSocket.accept();
+            System.out.println("S: Receiving...");
+
+            try {
+
+            	mRandom = new Random();
+            	
+            	    //TODO: create OutpStreamWriter and an InputStream writer.  
+            	    //Order of creation matters
+                //sends the message to the client
+                mOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+
+                //read the message received from client
+                //using a BufferedReader
+                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+                //In this while we wait to receive messages from client 
+                //(it's an infinite loop)
+                //listening for messages
+                
+                //TODO: Create a loop to read a line from the input 
+                //and the send a reply back to client using the sendMessage method
+                while (running) {
+                    String message = in.readLine();
+
+                    if (message != null && messageListener != null) {
+                        //call the method messageReceived from ServerBoard class
+                    	if (!message.equalsIgnoreCase("Disconnect")){
+                    		messageListener.messageReceived(message);
+                    		sendMessage(Common.mReplies.get(mRandom.nextInt(5)));
+                    	} else {
+                    		System.out.println("Disconnecting");
+                    		running = false;
+                    	}
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println("S: Error");
+                e.printStackTrace();
+            } finally {
+            	sendMessage("Disconnected");
+                client.close();
+                System.out.println("S: Done.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("S: Error");
+            e.printStackTrace();
+        }
+
+    }
+
+}

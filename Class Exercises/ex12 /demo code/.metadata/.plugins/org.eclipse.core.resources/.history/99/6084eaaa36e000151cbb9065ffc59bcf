@@ -1,0 +1,268 @@
+package tictactoe;
+
+import java.util.Arrays;
+import java.util.Random;
+
+/**
+ * COMP1406 - Winter2016 - Assignment 5
+ * 
+ * This class encapsulates a player in a tic-tac-toe game.
+ * See https://en.wikipedia.org/wiki/Tic-tac-toe for more
+ * information about tic-tac-toe.
+ * 
+ * @author <insert your name here>
+ * @since <add date of final revision>
+ * @custom.citations <add your citations here>
+ */
+public class TicTacToePlayer{
+
+	  /** 
+	   * Player's name. The name cannot be changed once it is set by the construtor.
+	   */
+	  private final String name;  // DO NOT CHANGE THIS
+	  private char playerIndicator; 
+
+	  
+	  /** Getter for the players name
+	    * 
+	    * @return the name of the player
+	    */
+	  public String getName(){   // DO NOT CHANGE THIS
+	    return name; 
+	  }
+	     
+	  
+	  
+	  /**
+	   * Constructor for a tic tac toe player.
+	   * 
+	   * @param name is the name of the player.
+	   * @param p must be either 'x' or 'o'. 
+	   */
+	  public TicTacToePlayer(String name, char p){
+	    //
+	    // you define this constructor
+	    //
+	    this.name               = name;
+	    this.playerIndicator    = p;
+	   }
+	  
+	  
+	  /**
+	   * Checks if a given game instance is over or not.
+	   * 
+	   * @param game is an instance of a tic tac toe game (the board)
+	   * @return true if the game instance is over 
+	   * (if one player has one or if there is a tie), otherwise false.
+	   */
+	  public static boolean gameOver(TicTacToeGame game){
+		     // Check columns
+	     /* for (int x = 0; x < game.getDimension(); x++)
+	      {   
+	    	  System.out.println("checking columns:");
+	          if (AllFieldsTheSame(x,game, 0,0, 1))
+	              return true;
+	      }
+
+	      // Check rows
+	      for (int y = 0; y < game.getDimension(); y++) {
+	    	  System.out.println("checking rows:");
+	          if (AllFieldsTheSame(0,game,y,1, 0)) {
+	              return true;
+	          }
+	      }
+
+	      // Check diagonals
+	      System.out.println("checking diagonals:");
+	      if (AllFieldsTheSame(0, game, 0,1, 1)) {
+	          return true;
+	      }
+
+	      if (AllFieldsTheSame(2,game, 0,-1, 1))
+	          return true;
+	      
+	      return false;*/
+		  return false;
+	  }
+	  
+	 /* //Check if all the fields are the same
+	  public boolean AllFieldsTheSame(int startX,TicTacToeGame game, int startY, int dx, int dy){
+	      char firstField = board[startY][startX];
+	      System.out.println("firstField: " + firstField +"IndexX: "+startX +"IndexY: "+startY +"board = "+board[startY][startX]);
+	      if (firstField == ' ')
+	      {
+	    	  System.out.println("I AM IN THE FALSE STAMENT");
+	          return false;
+	      }
+
+	      for (int i = 0; i < 3; i++)
+	      {
+	          int y = startY + dy * i;
+	          int x = startX + dx * i;
+	          System.out.print("value:  "+ board[x][y] + ", "+ "firstFiedl: "+ firstField);
+	          if (board[y][x] != firstField)
+	          {
+	        	  System.out.println();
+	              return false;
+	          }
+	      }
+	      System.out.println();
+	      return true;
+	  }*/
+	  
+	  /**
+	   * Checks if a given game instance is over or not.
+	   * 
+	   * @param game is an instance of a tic tac toe game (the board)
+	   * @param p1 is one player in the game
+	   * @param p2 is the other player in the game
+	   * @return p1 if player p1 has won the game, p2 if player p2 has 
+	   * won the game and returns null otherwise (if there is no winner in the given game).
+	   */
+	  public static TicTacToePlayer winner(TicTacToeGame game, 
+	                                       TicTacToePlayer p1,
+	                                       TicTacToePlayer p2)
+	  {
+	    //
+	    // your code here
+	    //
+	    return null;
+	  }
+	  
+	  
+	  
+	  /** 
+	   * Checks if current player is playing x's or o's.
+	   * 
+	   * @param none
+	   * @return true if this object is playing x's and false if the object is playing o's.
+	   */
+	  public boolean isX(){
+	    if (playerIndicator == 'x') {
+	    	return true;
+	    }else {
+	    	return false;
+	    }
+	  }
+	  
+	  /**
+	   * Getter method that tells if player is playing x's or o's.
+	   * 
+	   * @return 'x' if this player is playing x's and returns 'o' if this player is playing o's.
+	   */
+	  public char getXO(){
+	    return playerIndicator;
+	    }
+	  
+	  
+	  /**
+	   * Finds a valid move in a tic-tac-toe game for this player
+	   * 
+	   * @param game is an instance of a tic-tac-toe game
+	   * @return A position in the board [0,D-1] that is a valid move for this player to make, 
+	   * where D = dimention*dimension. 
+	   * If there are multiple valid moves any is acceptable. 
+	   * If there are no valid moves then the function returns -1.
+	   */
+	  public int findMove(TicTacToeGame game){
+		// Usually this can be a field rather than a method variable
+		  Random rand = new Random();
+		  int[] moves = findAllMoves(game);
+		  final int EMPTY = -1;
+
+		  if (moves != null){ 
+			  
+		    // nextInt is normally exclusive of the top value,
+		    // so add 1 to make it inclusive
+		    int randomNum = rand.nextInt((moves.length - 0)) + 0;
+		    System.out.println("Random: " + moves[randomNum]);
+		    return moves[randomNum];
+		  }
+		  System.out.println("Negative: " + -1);
+		  return -1;
+	  }
+	  
+	  /**
+	   * Finds a valid move in a tic-tac-toe game for this player
+	   * 
+	   * @param game is an instance of a tic-tac-toe game
+	   * @return An array of positions in the board [0,D-1] that are each a valid move 
+	   * for this player to make, where D = dimension*dimension. 
+	   * All valid moves must be included in the output. 
+	   * The order of the positions in the output array do not matter. If there are no
+	   * valid moves then the function return null. 
+	   */
+	  public int[] findAllMoves(TicTacToeGame game){
+		  final int EMPTY = -1;
+		  int[] moves = new int[game.getDimension()*game.getDimension()];
+		  Arrays.fill(moves, EMPTY);
+		    int counter = 0;
+		    for(int i = 0; i<=game.getDimension()*game.getDimension()-1;i++){
+		        if (game.getAtPosition(i) == '\0' ){// !there an empty spot 
+		        	moves[counter] = i;
+		        	counter+=1;
+		        	System.out.println("CAT :" +moves[counter]);
+		        }
+		    }
+		    System.out.println("------------------");
+		    if (moves[0]  != EMPTY) {
+		    	return moves;
+		    }
+		    return null;  
+	  }
+	  
+	  
+	  
+	  /**
+	   * Finds a winning move if possible for this player.
+	   * 
+	   * @param game is an instance of a tic-tac-toe game
+	   * @return A position in the board [0,D-1] that is a valid winning move for this player to make, 
+	   * where D = dimension*dimension.
+	   * If there are multiple winning moves then any is acceptable. 
+	   * Returns -1 if there is no winning move for the player. 
+	   */
+	  public int findWinningMove(TicTacToeGame game){
+	    //
+	    // your code here
+	    //
+	    return -2;
+	  }
+	  
+	  
+	  
+	  /**
+	   * Finds a blocking move if possible for this player
+	   * 
+	   * 
+	   * @param game is an instance of a tic-tac-toe game
+	   * @return A position in the board [0,D-1] that is a valid bocking 
+	   * move for this player to make, where D = dimension*dimension.
+	   * If there are multiple blocking moves then any is acceptable.
+	   * Returns -1 if there is no blocking move for this player.
+	   */
+	  public int findBlockingMove(TicTacToeGame game){
+	    //
+	    // your code here
+	    //
+	    return -3;
+	  }
+	  
+	  
+	  /** 
+	   * Plays a move for this player in a game
+	   * 
+	   * @param game is a tic-tac-toe game that the player is playing.
+	   * @param pos is the position [-1,D-1] in the game that the player is playing a move,
+	   * where D=dimension*dimension.
+	   * @return Nothing. The function has the side effect of playing a move on the board, 
+	   * using this player's symbol (x or o) at the specified position. If the position 
+	   * is -1 then the function does nothing.
+	   */
+	  public void play(TicTacToeGame game, int pos){
+	    //
+	    // your code here
+	    //
+	  }
+	  
+	}

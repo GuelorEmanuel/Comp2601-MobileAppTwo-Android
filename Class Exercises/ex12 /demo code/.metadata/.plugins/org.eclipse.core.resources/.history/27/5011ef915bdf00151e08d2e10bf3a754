@@ -1,0 +1,56 @@
+package exercise5;
+
+import java.awt.List;
+import java.util.ArrayList;
+
+public class Decoder {
+	
+	private int [] encodedData;
+	private int[] barkerCode;
+	
+	Decoder(int[] eData, int[] bCode) {
+		encodedData     = eData;
+		barkerCode       = bCode;
+	}
+	
+	public int[] decodeData() {
+		int decodeCounter = 0;
+		int barkerCodeCounter = 0;
+		ArrayList<Integer> data = new ArrayList<>();
+		
+		for (int i = 0; i < encodedData.length; i++) {
+			
+			if ( ((i+1) %4) == 0){
+				//barkerCodeCounter++;
+				System.out.println(encodedData[i]);
+				System.out.print(encodedData[i]);
+				System.out.println(barkerCodeCounter);
+				
+				if ( encodedData[i] == barkerCode[barkerCodeCounter]) {
+					decodeCounter+=1;
+				} else {
+					decodeCounter-=1;
+				}
+				System.out.println("Counter " +decodeCounter);
+				data.add(decodeCounter);
+				decodeCounter    = 0;
+				barkerCodeCounter = 0;
+				
+			}else {
+				System.out.print(encodedData[i]);
+				if ( encodedData[i] == barkerCode[barkerCodeCounter]) {
+					decodeCounter+=1;
+				} else {
+					decodeCounter-=1;
+				}
+				barkerCodeCounter++;
+
+			}
+		}
+		
+		return encodedData;
+	}
+	
+	
+
+}

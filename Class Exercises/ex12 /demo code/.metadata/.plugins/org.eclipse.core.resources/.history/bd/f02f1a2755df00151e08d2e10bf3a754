@@ -1,0 +1,21 @@
+package exercise5;
+
+public class Tictac {
+	private static char [][] board;
+	private int demension;
+	
+	
+	public Tictac() {
+		demension = 3;
+		board = new  char[demension][demension];
+	}
+	
+	
+	public static void main (String[] args) {
+		Tictac tac = new Tictac();
+		
+		Player p1 = new Player();
+		p1.play(tac, 4);
+	}
+
+}

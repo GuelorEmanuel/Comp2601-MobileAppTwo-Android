@@ -1,0 +1,34 @@
+package exercise5;
+
+public class Channel {
+	private int[] encodedData;
+	private double bER;
+	public Channel(int[] encodedData, double bER ) {
+		this.encodedData = encodedData;
+		this.bER         = bER;
+	}
+	
+	public int[] randomBitError() {
+		int[] data = new int[encodedData.length];
+		for (int i = 0;  i < encodedData.length; i++) {
+            int randomBit = (int)(2 * Math.random());  // add either 0 or 1
+            if (randomBit < bER ) {
+            	data[i] = 1;
+            } else {
+            	data[i] = 0;
+            }
+            
+        }
+		return data;
+		
+	}
+	
+	
+	public int[] xor(int s[], int e[]) {
+		int[] randomError = new int[s.length];
+		for (int i = 0; i < s.length; i++) {
+			randomError[i] = s[i] ^ e[i];
+    	}
+		return randomError;
+	}
+}

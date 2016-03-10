@@ -1,0 +1,28 @@
+package exercise5;
+
+public class DSSSSimulation {
+	
+	public static void main(String [] args) {
+		
+		int[] data = {0, 0,1, 0};
+		int[] code  = { 1, 1, 0};
+		
+		Encoder encoder = new Encoder(3, 4);
+		encoder.setData(data);
+		encoder.setBarkerCode(code);
+		Channel channel = new Channel(encoder.getEncoder(),1);
+		
+		
+		
+		encoder.displayDefaultEncoder();
+		System.out.println("-------");
+		channel.displayErrorsSequence();
+		System.out.println("-------");
+
+		
+	
+		
+				
+	}
+
+}

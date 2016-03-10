@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Points of Interest</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="city_button_title">Launch Map</string>
+    <string name="city_spinner_title">Choose a city</string>
+    <string name="return_title">Return to Main</string>
+    <string name="menu_map_return_main">Choose another city</string>
+    <string name="toast_waring">Need to pick a city!</string>
+
+    <string-array name="city_names">
+        <item>Ottawa</item>
+        <item>Toronto</item>
+        <item>Simcoe</item>
+    </string-array>
+</resources>
